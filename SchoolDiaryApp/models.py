@@ -13,13 +13,13 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
-        ('student', 'Uczeń'),
-        ('teacher', 'Nauczyciel'),
-        ('director', 'Dyrektor'),
-        ('parent', 'Rodzic'),
-        ('admin', 'Administrator'),
+        ('Student', 'Uczeń'),
+        ('Teacher', 'Nauczyciel'),
+        ('Director', 'Dyrektor'),
+        ('Parent', 'Rodzic'),
+        ('Administrator', 'Administrator'),
     )
-    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default='student')
+    user_type = models.CharField(max_length=15, choices=USER_TYPE_CHOICES, default='student')
     id = models.IntegerField(primary_key=True, unique=True)
     pesel = models.CharField(max_length=11, unique=True)
     login = models.CharField(max_length=255, unique=True)
