@@ -52,6 +52,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'SchoolDiary.urls'
+AUTH_USER_MODEL = 'SchoolDiaryApp.CustomUser'
 
 TEMPLATES = [
     {

@@ -1,15 +1,45 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 # Create your models here.
 
 from django.contrib.auth.models import Group
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 from django.contrib.auth.models import AbstractUser, Group, Permission
+
+from django.contrib.auth.models import BaseUserManager
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, username, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('Email is required')
+        if not username:
+            raise ValueError('Username is required')
+
+        email = self.normalize_email(email)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        # Ustaw domyślne wartości dla brakujących pól, jeśli wymagane
+        extra_fields.setdefault('Name', 'Super')
+        extra_fields.setdefault('Surname', 'Admin')
+        extra_fields.setdefault('pesel', '00000000000')
+        extra_fields.setdefault('birth_date', '2000-01-01')
+
+        return self.create_user(username, email, password, **extra_fields)
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -20,12 +50,13 @@ class CustomUser(AbstractUser):
         ('Administrator', 'Administrator'),
     )
     user_type = models.CharField(max_length=15, choices=USER_TYPE_CHOICES, default='student')
-    id = models.IntegerField(primary_key=True, unique=True)
     pesel = models.CharField(max_length=11, unique=True)
     login = models.CharField(max_length=255, unique=True)
     Name = models.CharField(max_length=255)
     Surname = models.CharField(max_length=255)
     birth_date = models.DateField()
+
+    # objects = CustomUserManager()  # Użyj niestandardowego menedżera
 
     def __str__(self):
         return self.username
@@ -54,7 +85,6 @@ class CustomUser(AbstractUser):
         blank=True,
         related_name='customuser_permissions'  # Unikalny related_name dla uprawnień
     )
-
 
 
 class School(models.Model):
@@ -101,10 +131,9 @@ class Message(models.Model):
     )
 
 
-
 class Class(models.Model):
-    class_id = models.IntegerField(primary_key=True, unique=True)
-    Name = models.CharField(max_length=255)
+    id = models.IntegerField(primary_key=True, unique=True)
+    name = models.CharField(max_length=255)
     school = models.ForeignKey(School, on_delete=models.PROTECT, related_name='classes_school')
     supervising_teacher = models.ForeignKey(Teacher, on_delete=models.PROTECT, related_name='supervising_teacher')
 
@@ -115,7 +144,7 @@ class Subject(models.Model):
 
 
 class Classes(models.Model):
-    classes_id = models.IntegerField(primary_key=True, unique=True)
+    id = models.IntegerField(primary_key=True, unique=True)
     date = models.DateField()
     lesson_num = models.IntegerField()
     class_id = models.ForeignKey(Class, on_delete=models.PROTECT, related_name='classe_id')
@@ -124,7 +153,7 @@ class Classes(models.Model):
 
 
 class Grate(models.Model):
-    grate_id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     value = models.IntegerField()
     weight = models.IntegerField()
     category = models.CharField(max_length=20, unique=True)
@@ -134,7 +163,7 @@ class Grate(models.Model):
 
 
 class Announcements(models.Model):
-    announcement_id = models.IntegerField(primary_key=True, unique=True)
+    id = models.IntegerField(primary_key=True, unique=True)
     topic = models.CharField(max_length=255)
     content = models.TextField(max_length=1000)
     date = models.DateField()
@@ -143,14 +172,14 @@ class Announcements(models.Model):
 
 
 class Frequency(models.Model):
-    frequency_id = models.IntegerField(primary_key=True, unique=True)
+    id = models.IntegerField(primary_key=True, unique=True)
     type = models.CharField(max_length=2)
     student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name='students_frequency')
     class_id = models.ForeignKey(Classes, on_delete=models.PROTECT, related_name='frequencies_class')
 
 
 class Event(models.Model):
-    event_id = models.IntegerField(primary_key=True, unique=True)
+    id = models.IntegerField(primary_key=True, unique=True)
     date = models.DateField()
     category = models.CharField(max_length=20)
     subject = models.CharField(max_length=100)
