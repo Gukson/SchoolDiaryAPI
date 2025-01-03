@@ -1,6 +1,7 @@
 from django.urls import path
 from .views.StudentListCreateAPIView import *
-
+from .views.schoolManagementView import *
+from .views.classManagmentView import *
 
 urlpatterns = [
     path('students/', manage_students, name='manage_students'),
@@ -13,5 +14,7 @@ urlpatterns = [
     path('directors/<int:pk>/', manage_single_director, name='manage_single_director'),
     path('admins/', manage_admins, name='manage_admins'),
     path('admins/<int:pk>/', manage_single_admin, name='manage_single_admin'),
+    path('schools/',school_view,name='school_view'),
+    path('schools/<int:school_id>/classes', classes_view, name='classes_view' ),
 
 ]

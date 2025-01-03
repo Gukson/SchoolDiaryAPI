@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from SchoolDiaryApp.models import School, Director, Teacher, CustomUser, Parent, Class, Grate
+from SchoolDiaryApp.models import Director, Teacher, CustomUser, Parent
+from SchoolDiaryApp.models_directory.structures import School
+from SchoolDiaryApp.models_directory.structures import Class, Grate
 
 
 class SchoolSerializer(serializers.ModelSerializer):
@@ -52,13 +54,16 @@ class ParentSerializer(serializers.ModelSerializer):
 
 
 class ClassSerializer(serializers.ModelSerializer):
-    school = SchoolSerializer()
-    supervising_teacher = TeacherSerializer()
+    # Dodanie `write_only=True` dla pola `school`, aby akceptowało tylko ID
+    school = serializers.PrimaryKeyRelatedField(
+        queryset=School.objects.all(),
+        write_only=True
+    )
+    school_name = serializers.CharField(source='school.name', read_only=True)  # Czytelne wyjście dla API
 
     class Meta:
         model = Class
-        fields = ['id', 'name', 'school', 'supervising_teacher']
-
+        fields = ['id', 'name', 'school', 'school_name', 'supervising_teacher']
 
 class StudentSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()

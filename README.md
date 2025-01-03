@@ -186,6 +186,95 @@ Tworzy nowego użytkownika o typie `Administrator`.
 - **Metody:** `GET`
 
 ---
+### 6. Zarządzanie szkołami
+
+#### **Lista wszystkich szkół i dodawanie nowej szkoły**
+- **URL:** `/schools/`
+- **Metody:** `GET`, `POST`
+
+##### **GET**:
+Zwraca listę wszystkich szkół.
+
+**Przykład odpowiedzi:**
+```json
+[
+    {
+        "id": 1,
+        "name": "High School 1"
+    },
+    {
+        "id": 2,
+        "name": "High School 2"
+    }
+]
+```
+
+##### **POST**:
+Tworzy nową szkołę.
+
+**Przykład żądania:**
+```json
+{
+    "name": "High School 3"
+}
+```
+
+**Przykład odpowiedzi:**
+```json
+{
+    "id": 3,
+    "name": "High School 3"
+}
+```
+
+---
+
+### 7. Zarządzanie klasami
+
+#### **Lista wszystkich klas w danej szkole i dodawanie nowej klasy**
+- **URL:** `/schools/<int:school_id>/classes`
+- **Metody:** `GET`, `POST`
+
+##### **GET**:
+Zwraca listę wszystkich klas przypisanych do konkretnej szkoły.
+
+**Przykład odpowiedzi:**
+```json
+[
+    {
+        "id": 1,
+        "name": "Class A",
+        "supervising_teacher": 2
+    },
+    {
+        "id": 2,
+        "name": "Class B",
+        "supervising_teacher": 3
+    }
+]
+```
+
+##### **POST**:
+Tworzy nową klasę przypisaną do konkretnej szkoły.
+
+**Przykład żądania:**
+```json
+{
+    "name": "Class C",
+    "supervising_teacher": 2
+}
+```
+
+**Przykład odpowiedzi:**
+```json
+{
+    "id": 3,
+    "name": "Class C",
+    "school": 1,
+    "supervising_teacher": 2
+}
+```
+
 
 ## Uwagi
 1. **Walidacja haseł**: Hasła przesyłane w żądaniach `POST` są przechowywane w postaci zaszyfrowanej.
