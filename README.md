@@ -4,6 +4,59 @@ API umożliwia zarządzanie szkołami, klasami, uczniami oraz nauczycielami w sy
 
 ---
 
+
+## Endpoint logowania
+
+### **Logowanie i uzyskiwanie tokenu**
+- **URL:** `/auth/token/login/`
+- **Metoda:** `POST`
+
+**Przykład żądania:**
+```json
+{
+    "login": "john_doe",
+    "password": "securepassword123"
+}
+```
+
+**Przykład odpowiedzi:**
+```json
+{
+    "auth_token": "a4b9c1d4e5f6g7h8i9j0k1l2m3n4o5p6"
+}
+```
+
+---
+
+## Używanie tokenu
+
+Po zalogowaniu i uzyskaniu tokenu można go używać do autoryzacji w kolejnych zapytaniach, dodając go do nagłówka `Authorization`.
+
+**Przykład nagłówka:**
+```
+Authorization: Token a4b9c1d4e5f6g7h8i9j0k1l2m3n4o5p6
+```
+
+---
+
+## Endpoint wylogowania
+
+### **Wylogowanie**
+- **URL:** `/auth/token/logout/`
+- **Metoda:** `POST`
+
+**Przykład żądania:**
+Nie wymaga żadnych danych w ciele żądania.
+
+**Przykład odpowiedzi:**
+```json
+{}
+```
+
+Po wylogowaniu token staje się nieważny.
+
+---
+
 ## Endpointy
 
 ### 1. Zarządzanie klasami (dyrektor)
