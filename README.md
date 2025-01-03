@@ -1,238 +1,15 @@
-
 # School Management API
 
-API umożliwia zarządzanie użytkownikami różnych grup w systemie szkolnym: `Student`, `Parent`, `Teacher`, `Director`, `Admin`. Poniżej znajduje się opis dostępnych endpointów oraz ich funkcjonalności.
+API umożliwia zarządzanie szkołami, klasami, uczniami oraz nauczycielami w systemie szkolnym. Poniżej znajduje się opis dostępnych endpointów oraz ich funkcjonalności.
 
 ---
 
 ## Endpointy
 
-### 1. Zarządzanie studentami
+### 1. Zarządzanie klasami (dyrektor)
 
-#### **Lista wszystkich studentów i dodawanie nowego studenta**
-- **URL:** `/students/`
-- **Metody:** `GET`, `POST`
-
-##### **GET**:
-Zwraca listę wszystkich studentów w systemie.
-
-**Przykład odpowiedzi:**
-```json
-[
-    {
-        "id": 1,
-        "user": {
-            "id": 1,
-            "username": "john_doe",
-            "email": "john.doe@example.com",
-            "pesel": "12345678901",
-            "login": "john_doe",
-            "Name": "John",
-            "Surname": "Doe",
-            "birth_date": "2005-09-15",
-            "user_type": "Student"
-        },
-        "parent": null
-    }
-]
-```
-
-##### **POST**:
-Tworzy nowego użytkownika o typie `Student`.
-
-**Przykład żądania:**
-```json
-{
-    "username": "jane_doe",
-    "email": "jane.doe@example.com",
-    "password": "securepassword123",
-    "pesel": "98765432109",
-    "login": "jane_doe",
-    "Name": "Jane",
-    "Surname": "Doe",
-    "birth_date": "2006-07-20"
-}
-```
-
-**Przykład odpowiedzi:**
-```json
-{
-    "id": 2,
-    "user": {
-        "id": 2,
-        "username": "jane_doe",
-        "email": "jane.doe@example.com",
-        "pesel": "98765432109",
-        "login": "jane_doe",
-        "Name": "Jane",
-        "Surname": "Doe",
-        "birth_date": "2006-07-20",
-        "user_type": "Student"
-    },
-    "parent": null
-}
-```
-
-#### **Pobieranie szczegółów pojedynczego studenta**
-- **URL:** `/students/<id>/`
-- **Metody:** `GET`
-
-**Przykład odpowiedzi:**
-```json
-[
-    {
-        "id": 1,
-        "user": {
-            "id": 1,
-            "username": "john_doe",
-            "email": "john.doe@example.com",
-            "pesel": "12345678901",
-            "login": "john_doe",
-            "Name": "John",
-            "Surname": "Doe",
-            "birth_date": "2005-09-15",
-            "user_type": "Student"
-        },
-        "parent": null
-    }
-]
-```
-
----
-
-### 2. Zarządzanie rodzicami
-
-#### **Lista wszystkich rodziców i dodawanie nowego rodzica**
-- **URL:** `/parents/`
-- **Metody:** `GET`, `POST`
-
-##### **GET**:
-Zwraca listę wszystkich rodziców.
-
-##### **POST**:
-Tworzy nowego użytkownika o typie `Parent`.
-
-#### **Pobieranie szczegółów pojedynczego rodzica**
-- **URL:** `/parents/<id>/`
-- **Metody:** `GET`
-
----
-
-### 3. Zarządzanie nauczycielami
-
-#### **Lista wszystkich nauczycieli i dodawanie nowego nauczyciela**
-- **URL:** `/teachers/`
-- **Metody:** `GET`, `POST`
-
-##### **GET**:
-Zwraca listę wszystkich nauczycieli.
-
-##### **POST**:
-Tworzy nowego użytkownika o typie `Teacher`.
-
-#### **Pobieranie szczegółów pojedynczego nauczyciela**
-- **URL:** `/teachers/<id>/`
-- **Metody:** `GET`
-
----
-
-### 4. Zarządzanie dyrektorami
-
-#### **Lista wszystkich dyrektorów i dodawanie nowego dyrektora**
-- **URL:** `/directors/`
-- **Metody:** `GET`, `POST`
-
-##### **GET**:
-Zwraca listę wszystkich dyrektorów.
-
-##### **POST**:
-Tworzy nowego użytkownika o typie `Director`. Należy podać dodatkowo pole `school` z ID szkoły.
-
-**Przykład żądania:**
-```json
-{
-    "username": "director01",
-    "email": "director01@example.com",
-    "password": "securepassword123",
-    "pesel": "12312312312",
-    "login": "director01",
-    "Name": "Alice",
-    "Surname": "Smith",
-    "birth_date": "1975-01-01",
-    "school": 1
-}
-```
-
-#### **Pobieranie szczegółów pojedynczego dyrektora**
-- **URL:** `/directors/<id>/`
-- **Metody:** `GET`
-
----
-
-### 5. Zarządzanie administratorami
-
-#### **Lista wszystkich administratorów i dodawanie nowego administratora**
-- **URL:** `/admins/`
-- **Metody:** `GET`, `POST`
-
-##### **GET**:
-Zwraca listę wszystkich administratorów.
-
-##### **POST**:
-Tworzy nowego użytkownika o typie `Administrator`.
-
-#### **Pobieranie szczegółów pojedynczego administratora**
-- **URL:** `/admins/<id>/`
-- **Metody:** `GET`
-
----
-### 6. Zarządzanie szkołami
-
-#### **Lista wszystkich szkół i dodawanie nowej szkoły**
-- **URL:** `/schools/`
-- **Metody:** `GET`, `POST`
-
-##### **GET**:
-Zwraca listę wszystkich szkół.
-
-**Przykład odpowiedzi:**
-```json
-[
-    {
-        "id": 1,
-        "name": "High School 1"
-    },
-    {
-        "id": 2,
-        "name": "High School 2"
-    }
-]
-```
-
-##### **POST**:
-Tworzy nową szkołę.
-
-**Przykład żądania:**
-```json
-{
-    "name": "High School 3"
-}
-```
-
-**Przykład odpowiedzi:**
-```json
-{
-    "id": 3,
-    "name": "High School 3"
-}
-```
-
----
-
-### 7. Zarządzanie klasami
-
-#### **Lista wszystkich klas w danej szkole i dodawanie nowej klasy**
-- **URL:** `/schools/<int:school_id>/classes`
+#### **Lista wszystkich klas w danej szkole oraz dodawanie nowej klasy**
+- **URL:** `/schools/<int:school_id>/classes/`
 - **Metody:** `GET`, `POST`
 
 ##### **GET**:
@@ -255,7 +32,7 @@ Zwraca listę wszystkich klas przypisanych do konkretnej szkoły.
 ```
 
 ##### **POST**:
-Tworzy nową klasę przypisaną do konkretnej szkoły.
+Dodaje nową klasę do konkretnej szkoły.
 
 **Przykład żądania:**
 ```json
@@ -275,9 +52,132 @@ Tworzy nową klasę przypisaną do konkretnej szkoły.
 }
 ```
 
+---
+
+#### **Zarządzanie pojedynczą klasą**
+- **URL:** `/schools/<int:school_id>/classes/<str:name>/`
+- **Metody:** `GET`, `PATCH`, `DELETE`
+
+##### **GET**:
+Zwraca szczegóły konkretnej klasy w danej szkole.
+
+##### **PATCH**:
+Aktualizuje nazwę klasy lub wychowawcę.
+
+**Przykład żądania:**
+```json
+{
+    "name": "Class D",
+    "supervising_teacher": 3
+}
+```
+
+##### **DELETE**:
+Usuwa konkretną klasę.
+
+---
+
+### 2. Zarządzanie uczniami (dyrektor)
+
+#### **Lista wszystkich uczniów w danej szkole oraz dodawanie nowego ucznia**
+- **URL:** `/students/<int:school_id>/`
+- **Metody:** `GET`, `POST`
+
+##### **GET**:
+Zwraca listę wszystkich uczniów przypisanych do konkretnej szkoły.
+
+##### **POST**:
+Dodaje nowego ucznia do danej szkoły.
+
+**Przykład żądania:**
+```json
+{
+    "username": "john_doe",
+    "email": "john.doe@example.com",
+    "password": "securepassword123",
+    "pesel": "12345678901",
+    "login": "john_doe",
+    "Name": "John",
+    "Surname": "Doe",
+    "birth_date": "2005-09-15"
+}
+```
+
+#### **Zarządzanie szczegółami ucznia**
+- **URL:** `/students/<int:pk>/`
+- **Metody:** `GET`
+
+##### **GET**:
+Zwraca szczegóły pojedynczego ucznia.
+
+---
+
+#### **Zarządzanie przypisaniem ucznia do klasy**
+- **URL:** `/students/class/`
+- **Metody:** `PATCH`
+
+##### **PATCH**:
+Aktualizuje przypisanie ucznia do konkretnej klasy.
+
+**Przykład żądania:**
+```json
+{
+    "student_id": 1,
+    "class_id": 2
+}
+```
+
+---
+
+### 3. Zarządzanie nauczycielami (dyrektor)
+
+#### **Lista wszystkich nauczycieli oraz dodawanie nowego nauczyciela**
+- **URL:** `/teachers/`
+- **Metody:** `GET`, `POST`
+
+##### **GET**:
+Zwraca listę wszystkich nauczycieli w systemie.
+
+##### **POST**:
+Dodaje nowego nauczyciela.
+
+**Przykład żądania:**
+```json
+{
+    "username": "teacher_john",
+    "email": "john.teacher@example.com",
+    "password": "strongpassword123",
+    "pesel": "98010112345",
+    "login": "john_teacher",
+    "Name": "John",
+    "Surname": "Doe",
+    "birth_date": "1980-01-01"
+}
+```
+
+#### **Zarządzanie szczegółami nauczyciela**
+- **URL:** `/teachers/<int:pk>/`
+- **Metody:** `GET`, `PATCH`, `DELETE`
+
+##### **GET**:
+Zwraca szczegóły konkretnego nauczyciela.
+
+##### **PATCH**:
+Aktualizuje dane nauczyciela.
+
+**Przykład żądania:**
+```json
+{
+    "email": "updated.teacher@example.com",
+    "Name": "Updated Name"
+}
+```
+
+##### **DELETE**:
+Usuwa nauczyciela.
+
+---
 
 ## Uwagi
-1. **Walidacja haseł**: Hasła przesyłane w żądaniach `POST` są przechowywane w postaci zaszyfrowanej.
-2. **Identyfikacja użytkownika**: Każda grupa (`Student`, `Parent`, `Teacher`, `Director`, `Admin`) jest powiązana z modelem `CustomUser`.
-3. **Autoryzacja**: Niektóre endpointy mogą wymagać odpowiednich uprawnień. Upewnij się, że użytkownik jest zalogowany i ma wymagane role.
-4. **Super admin**: login: admin, password: securepassword123
+1. **Autoryzacja:** Niektóre endpointy mogą wymagać odpowiednich uprawnień (np. rola `Director`).
+2. *

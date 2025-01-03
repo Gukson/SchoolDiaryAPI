@@ -40,7 +40,7 @@ class CustomUser(AbstractUser):
         ('Administrator', 'Administrator'),
     )
     user_type = models.CharField(max_length=15, choices=USER_TYPE_CHOICES, default='student')
-    pesel = models.CharField(max_length=11, unique=True)
+    pesel = models.CharField(max_length=11)
     login = models.CharField(max_length=255, unique=True)
     Name = models.CharField(max_length=255)
     Surname = models.CharField(max_length=255)
@@ -83,6 +83,13 @@ class Student(models.Model):
         on_delete=models.PROTECT,
         related_name='students_class',
         null=True,
+        blank=True
+    )
+    school = models.ForeignKey(
+        'SchoolDiaryApp.School',
+        on_delete=models.PROTECT,
+        related_name='students_school'
+        ,null=True,
         blank=True
     )
 
