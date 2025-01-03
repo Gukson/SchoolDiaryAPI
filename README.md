@@ -191,4 +191,4 @@ Tworzy nowego użytkownika o typie `Administrator`.
 1. **Walidacja haseł**: Hasła przesyłane w żądaniach `POST` są przechowywane w postaci zaszyfrowanej.
 2. **Identyfikacja użytkownika**: Każda grupa (`Student`, `Parent`, `Teacher`, `Director`, `Admin`) jest powiązana z modelem `CustomUser`.
 3. **Autoryzacja**: Niektóre endpointy mogą wymagać odpowiednich uprawnień. Upewnij się, że użytkownik jest zalogowany i ma wymagane role.
-4. **Super admin**: login: admin, password: admin
+4. **Super admin**: login: admin, password: securepassword123
