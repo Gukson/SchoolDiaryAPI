@@ -231,6 +231,81 @@ Usuwa nauczyciela.
 
 ---
 
+### Zarządzanie tematami zajęć (Subjects)
+
+#### **Lista wszystkich tematów zajęć oraz dodawanie nowego tematu**
+- **URL:** `/subjects/`
+- **Metody:** `GET`, `POST`
+
+#### **GET**:
+Zwraca listę wszystkich tematów zajęć.
+
+**Przykład odpowiedzi:**
+```json
+[
+    {
+        "id": 1,
+        "name": "Mathematics"
+    },
+    {
+        "id": 2,
+        "name": "Physics"
+    }
+]
+```
+
+#### **POST**:
+Dodaje nowy temat zajęć.
+
+**Przykład żądania:**
+```json
+{
+    "name": "Biology"
+}
+```
+
+**Przykład odpowiedzi:**
+```json
+{
+    "id": 3,
+    "name": "Biology"
+}
+```
+
+---
+
+### Zarządzanie zajęciami (Classes)
+
+#### **Tworzenie zajęć cyklicznych**
+- **URL:** `/classes/`
+- **Metody:** `POST`
+
+#### **POST**:
+Tworzy zajęcia cyklicznie (co tydzień lub co dwa tygodnie) w określonym przedziale czasowym z uwzględnieniem godziny.
+
+**Przykład żądania:**
+```json
+{
+    "class_name": "1A",
+    "subject_id": 2,
+    "teacher_id": 3,
+    "start_date": "2024-01-15",
+    "end_date": "2024-03-31",
+    "start_time": "08:30:00",
+    "lesson_num": 1,
+    "frequency": 1
+}
+```
+
+**Przykład odpowiedzi:**
+```json
+{
+    "message": "Utworzono 11 zajęć cyklicznych."
+}
+```
+
+---
+
 ## Uwagi
 1. **Autoryzacja:** Niektóre endpointy mogą wymagać odpowiednich uprawnień (np. rola `Director`).
 2. *

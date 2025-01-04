@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group
 
 
 class IsAdministrator(permissions.BasePermission):
+    message = "Nie masz uprawnień, aby uzyskać dostęp do tej zawartości."
     def has_permission(self, request, view):
         return request.user.groups.filter(name='Administrator').exists()
 
@@ -11,6 +12,7 @@ class IsAdministrator(permissions.BasePermission):
 
 
 class IsDirector(permissions.BasePermission):
+    message = "Nie masz uprawnień, aby uzyskać dostęp do tej zawartości."
     def has_permission(self, request, view):
         return request.user.groups.filter(name='Director').exists()
 
@@ -19,6 +21,7 @@ class IsDirector(permissions.BasePermission):
 
 
 class IsParent(permissions.BasePermission):
+    message = "Nie masz uprawnień, aby uzyskać dostęp do tej zawartości."
     def has_permission(self, request, view):
         return request.user.groups.filter(name='Parent').exists()
 
@@ -27,6 +30,7 @@ class IsParent(permissions.BasePermission):
 
 
 class IsStudent(permissions.BasePermission):
+    message = "Nie masz uprawnień, aby uzyskać dostęp do tej zawartości."
     def has_permission(self, request, view):
         return request.user.groups.filter(name='Student').exists()
 
@@ -35,6 +39,7 @@ class IsStudent(permissions.BasePermission):
 
 
 class IsTeacher(permissions.BasePermission):
+    message = "Nie masz uprawnień, aby uzyskać dostęp do tej zawartości."
     def has_permission(self, request, view):
         return request.user.groups.filter(name='Teacher').exists()
 

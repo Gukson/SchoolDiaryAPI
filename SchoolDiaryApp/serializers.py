@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from SchoolDiaryApp.models import Director, Teacher, CustomUser, Parent
 from SchoolDiaryApp.models_directory.structures import School
-from SchoolDiaryApp.models_directory.structures import Class, Grate
+from SchoolDiaryApp.models_directory.structures import Class, Grate, Subject, Classes
 
 
 class SchoolSerializer(serializers.ModelSerializer):
@@ -106,3 +106,29 @@ class GradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grate
         fields = ['id', 'value', 'weight', 'description', 'class_id', 'category']
+
+
+class SubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = ['id', 'name', 'school']  # Dodajemy również pole `school`, jeśli jest wymagane
+        read_only_fields = ['id', 'school']  # `school` będzie tylko do odczytu
+
+
+class ClassesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Classes
+        fields = ['id', 'date', 'lesson_num','time', 'class_id', 'subject', 'teacher']
+
+    class_id = serializers.PrimaryKeyRelatedField(
+        queryset=Class.objects.all(),
+        required=True
+    )
+    subject = serializers.PrimaryKeyRelatedField(
+        queryset=Subject.objects.all(),
+        required=True
+    )
+    teacher = serializers.PrimaryKeyRelatedField(
+        queryset=Teacher.objects.all(),
+        required=True
+    )

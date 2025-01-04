@@ -3,9 +3,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from SchoolDiaryApp.models import Teacher
 from SchoolDiaryApp.serializers import TeacherSerializer, CustomUserSerializer
+from rest_framework.decorators import api_view, permission_classes
+from SchoolDiaryApp.permissions import IsDirector
 
 # Zarządzanie nauczycielami
+
 @api_view(['GET', 'POST', 'DELETE'])
+@permission_classes([IsDirector])
 def manage_teachers(request):
     if request.method == 'GET':
         teachers = Teacher.objects.all()
@@ -27,6 +31,7 @@ def manage_teachers(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsDirector])
 def manage_single_teacher(request, pk):
     teacher = Teacher.objects.filter(id=pk)
     if not teacher.exists():

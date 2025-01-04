@@ -1,23 +1,24 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from SchoolDiaryApp.permissions import IsDirector
 from SchoolDiaryApp.models import CustomUser, Student,Parent, Teacher, Director, Admin, CustomUser
 from SchoolDiaryApp.models_directory.structures import School, Class
 from SchoolDiaryApp.serializers import CustomUserSerializer, StudentSerializer, ParentSerializer, TeacherSerializer, DirectorSerializer, AdminSerializer, CustomUserSerializer
 
 
 @api_view(['GET', 'POST', 'DELETE'])
-def manage_students(request, school_id):
+@permission_classes([IsDirector])
+def manage_students(request):
+    director = get_object_or_404(Director, user=request.user)
+    school = director.school
     if request.method == 'GET':
-        school = get_object_or_404(School, id=school_id)
         students = Student.objects.filter(school=school).order_by('user__last_name', 'user__first_name')
         serializer = StudentSerializer(students, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     if request.method == 'POST':
-        school = get_object_or_404(School, id=school_id)
         pesel = request.data.get('pesel')
 
         existing_student = Student.objects.filter(
@@ -41,13 +42,13 @@ def manage_students(request, school_id):
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        school = get_object_or_404(School, id=school_id)
         student_id = request.data.get('id')
         student = get_object_or_404(Student, id=student_id, school=school)
         student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
+@permission_classes([IsDirector])
 def manage_single_student(request, pk):
     student = Student.objects.filter(id=pk)
     if not student.exists():
@@ -57,6 +58,7 @@ def manage_single_student(request, pk):
 
 
 @api_view(['POST'])
+@permission_classes([IsDirector])
 def manage_student_class(request):
     pesel = request.data.get('pesel')
     school_id = request.data.get('school_id')

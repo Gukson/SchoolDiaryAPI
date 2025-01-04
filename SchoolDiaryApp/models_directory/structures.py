@@ -20,12 +20,19 @@ class Class(models.Model):
     )
 
 class Subject(models.Model):
-    subject_id = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=20)
+    school = models.ForeignKey(
+        'SchoolDiaryApp.School',
+        on_delete=models.PROTECT,
+        related_name='subjects_school',
+        null=True,
+        blank=True
+    )
 
 class Classes(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
     date = models.DateField()
+    time = models.TimeField()  # Dodane pole do przechowywania godziny rozpoczęcia
     lesson_num = models.IntegerField()
     class_id = models.ForeignKey(
         Class,

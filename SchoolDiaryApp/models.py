@@ -101,7 +101,9 @@ class Director(models.Model):
     school = models.ForeignKey(
         'SchoolDiaryApp.School',
         on_delete=models.PROTECT,
-        related_name='directors_school'
+        related_name='directors_school',
+        null=True,
+        blank=True
     )
 
 class Admin(models.Model):

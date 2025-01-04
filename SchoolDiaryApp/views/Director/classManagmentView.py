@@ -1,17 +1,21 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
+from SchoolDiaryApp.permissions import IsDirector
 from rest_framework.response import Response
 from rest_framework import status
 
 from SchoolDiaryApp.models_directory.structures import Class, School
-from SchoolDiaryApp.models import Student, Teacher
+from SchoolDiaryApp.models import Student, Teacher, Director
+
 from SchoolDiaryApp.serializers import ClassSerializer, StudentSerializer
 
 
 @api_view(['GET', 'POST'])
-def classes_view(request, school_id):
+@permission_classes([IsDirector])
+def classes_view(request):
+    director = get_object_or_404(Director, user=request.user)
     try:
-        school = School.objects.get(id=school_id)
+        school = director.school
     except School.DoesNotExist:
         return Response({'error': 'School not found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -30,10 +34,13 @@ def classes_view(request, school_id):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET', 'PATCH', 'DELETE'])
-def class_view(request, school_id, name):
+@permission_classes([IsDirector])
+def class_view(request, name):
+    director = get_object_or_404(Director, user=request.user)
     if request.method == 'GET':
-        school = get_object_or_404(School, id=school_id)
+        school = director.school
         try:
             class_ = Class.objects.get(name=name, school=school)
         except Class.DoesNotExist:
@@ -44,7 +51,7 @@ def class_view(request, school_id, name):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     if request.method == 'PATCH':
-        school = get_object_or_404(School, id=school_id)
+        school = director.school
         class_ = get_object_or_404(Class, name=name, school=school)
         print("siema")
         supervising_teacher_id = request.data.get('supervising_teacher')
@@ -63,7 +70,7 @@ def class_view(request, school_id, name):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     if request.method == 'DELETE':
-        school = get_object_or_404(School, id=school_id)
+        school = director.school
         class_ = get_object_or_404(Class, name=name, school=school)
         class_.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
