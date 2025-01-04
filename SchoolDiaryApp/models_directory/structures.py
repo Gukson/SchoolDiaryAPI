@@ -7,7 +7,7 @@ class School(models.Model):
 class Class(models.Model):
     name = models.CharField(max_length=255)
     school = models.ForeignKey(
-        School,
+        'SchoolDiaryApp.School',
         on_delete=models.PROTECT,
         related_name='classes_school'
     )

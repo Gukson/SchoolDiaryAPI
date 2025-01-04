@@ -27,6 +27,9 @@ urlpatterns = [
     #dyrektor - zarządzanie przedmiotami
     path('subjects/', subject_view, name='subject_view'),
 
+
+
+
     path('parents/', manage_parents, name='manage_parents'),
     path('parents/<int:pk>/', manage_single_parent, name='manage_single_parent'),
 
