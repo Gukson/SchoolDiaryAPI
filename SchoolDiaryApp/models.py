@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager
+from SchoolDiaryApp.models_directory.structures import *
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
@@ -79,17 +80,17 @@ class Student(models.Model):
         null=True
     )
     class_id = models.ForeignKey(
-        'SchoolDiaryApp.Class',
+        Class,
         on_delete=models.PROTECT,
         related_name='students_class',
         null=True,
         blank=True
     )
     school = models.ForeignKey(
-        'SchoolDiaryApp.School',
+        School,
         on_delete=models.PROTECT,
-        related_name='students_school'
-        ,null=True,
+        related_name='students_school',
+        null=True,
         blank=True
     )
 
@@ -99,7 +100,7 @@ class Teacher(models.Model):
 class Director(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.PROTECT)
     school = models.ForeignKey(
-        'SchoolDiaryApp.School',
+        School,
         on_delete=models.PROTECT,
         related_name='directors_school',
         null=True,
