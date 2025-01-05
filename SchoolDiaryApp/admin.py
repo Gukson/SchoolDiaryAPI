@@ -4,7 +4,7 @@ from .models import CustomUser, Parent, Student, Teacher, Director, Admin
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'email', 'user_type', 'Name', 'Surname', 'is_staff', 'is_active')
+    list_display = ('id', 'username', 'email', 'user_type', 'Name', 'Surname', 'is_staff', 'is_active', 'birth_date')
     search_fields = ('username', 'email', 'Name', 'Surname', 'pesel')
     list_filter = ('user_type', 'is_active', 'is_staff')
 

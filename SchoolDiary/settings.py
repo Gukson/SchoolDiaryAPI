@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "corsheaders",
     'rest_framework',
     'SchoolDiaryApp',
     'rest_framework.authtoken',
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'SchoolDiary.urls'
@@ -138,3 +140,7 @@ REST_FRAMEWORK = {
 DJOSER = {
     'USER_ID_FIELD': 'login'
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
