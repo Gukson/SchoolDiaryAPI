@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager
 from SchoolDiaryApp.models_directory.structures import *
+from datetime import date
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
@@ -28,11 +29,12 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('Name', 'Super')
         extra_fields.setdefault('Surname', 'Admin')
         extra_fields.setdefault('pesel', '00000000000')
-        extra_fields.setdefault('birth_date', '2000-01-01')
+        extra_fields.setdefault('birth_date', date(2000, 1, 1))
 
         return self.create_user(username, email, password, **extra_fields)
 
 class CustomUser(AbstractUser):
+    objects = CustomUserManager()
     USER_TYPE_CHOICES = (
         ('Student', 'Uczeń'),
         ('Teacher', 'Nauczyciel'),
