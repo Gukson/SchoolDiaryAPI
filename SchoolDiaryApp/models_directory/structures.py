@@ -115,10 +115,10 @@ class Event(models.Model):
     )
 
 class Message(models.Model):
-    id = models.IntegerField(primary_key=True, unique=True)
-    date = models.DateField()
+    date = models.DateTimeField(auto_now_add=True)
     topic = models.CharField(max_length=100)
     content = models.TextField(max_length=1000)
+    read = models.BooleanField(default=False)
     address = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,

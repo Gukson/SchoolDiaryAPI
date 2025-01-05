@@ -303,8 +303,94 @@ Tworzy zajęcia cyklicznie (co tydzień lub co dwa tygodnie) w określonym przed
     "message": "Utworzono 11 zajęć cyklicznych."
 }
 ```
+## Wiadomości
+
+### 1. Odebrane wiadomości
+**Path:** `/get_received_messages/`  
+**Metoda:** `GET`  
+**Opis:** Zwraca listę wszystkich wiadomości odebranych przez aktualnie zalogowanego użytkownika.  
+
+**Przykładowa odpowiedź:**
+```json
+[
+    {
+        "id": 1,
+        "date": "2025-01-05T12:34:56",
+        "topic": "Zaproszenie",
+        "content": "Cześć, zapraszam na spotkanie.",
+        "read": false,
+        "sender": 2,
+        "address": 1
+    }
+]
+```
 
 ---
+
+### 2. Wysłane wiadomości
+**Path:** `/get_sent_messages/`  
+**Metoda:** `GET`  
+**Opis:** Zwraca listę wszystkich wiadomości wysłanych przez aktualnie zalogowanego użytkownika.  
+
+**Przykładowa odpowiedź:**
+```json
+[
+    {
+        "id": 2,
+        "date": "2025-01-04T14:30:00",
+        "topic": "Podziękowanie",
+        "content": "Dziękuję za Twoją pomoc!",
+        "read": true,
+        "sender": 1,
+        "address": 3
+    }
+]
+```
+
+---
+
+### 3. Aktualizacja statusu wiadomości
+**Path:** `/update_message_status/<int:message_id>/`  
+**Metoda:** `PATCH`  
+**Opis:** Aktualizuje status wiadomości, np. pole `read`, oznaczając wiadomość jako odczytaną lub nieodczytaną.  
+
+**Przykładowa odpowiedź:**
+```json
+{
+    "message": "Status wiadomości został zaktualizowany."
+}
+```
+
+---
+
+### 4. Wysyłanie nowej wiadomości
+**Path:** `/send_message/`  
+**Metoda:** `POST`  
+**Opis:** Tworzy nową wiadomość z podanym tematem, treścią, nadawcą i adresatem.  
+**Przykładowe użycie (curl):**
+```json
+{
+    "content": "Cześć, jak się masz? To wiadomość testowa.",
+    "topic": "Zapytanie",
+    "address_id": 2
+}
+```
+**Przykładowa odpowiedź:**
+```json
+{
+    "message": "Wiadomość została pomyślnie wysłana."
+}
+```
+
+---
+
+## Wymagania:
+- Wszystkie endpointy wymagają uwierzytelnienia tokenem (`Authorization: Token <your-token>`).
+- Token musi być powiązany z zalogowanym użytkownikiem.
+
+## Uwagi:
+- Endpointy `/get_received_messages/` i `/get_sent_messages/` sortują wiadomości według daty w kolejności od najnowszych do najstarszych.
+- Pola `read` pozwalają na śledzenie, czy wiadomość została odczytana.
 
 ## Uwagi
 1. **Autoryzacja:** Niektóre endpointy mogą wymagać odpowiednich uprawnień (np. rola `Director`).

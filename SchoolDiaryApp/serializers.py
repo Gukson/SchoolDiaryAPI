@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from SchoolDiaryApp.models import Director, Teacher, CustomUser, Parent
 from SchoolDiaryApp.models_directory.structures import School
-from SchoolDiaryApp.models_directory.structures import Class, Grate, Subject, Classes
+from SchoolDiaryApp.models_directory.structures import Class, Grate, Subject, Classes, Message
 
 
 class SchoolSerializer(serializers.ModelSerializer):
@@ -132,3 +132,9 @@ class ClassesSerializer(serializers.ModelSerializer):
         queryset=Teacher.objects.all(),
         required=True
     )
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['id', 'date', 'topic', 'content', 'read', 'sender', 'address']

@@ -5,6 +5,7 @@ from .views.schoolManagementView import *
 from SchoolDiaryApp.views.Director.classesManagment import *
 from SchoolDiaryApp.views.Director.teacherManagment import *
 from SchoolDiaryApp.views.Director.classManagmentView import *
+from SchoolDiaryApp.views.PubliclyAvailable.messagesManagmentView import *
 
 urlpatterns = [
     #dyrektor - zarządzanie klasami
@@ -27,8 +28,19 @@ urlpatterns = [
     #dyrektor - zarządzanie przedmiotami
     path('subjects/', subject_view, name='subject_view'),
 
+    #messages
+    path('get_received_messages/', get_received_messages, name='get_received_messages'),
 
+    # Wysłane wiadomości
+    path('get_sent_messages/', get_sent_messages, name='get_sent_messages'),
 
+    # Aktualizacja statusu wiadomości (np. odczytane/nieodczytane)
+    path('update_message_status/<int:message_id>/', update_message_status, name='update_message_status'),
+
+    # Wysyłanie nowej wiadomości
+    path('send_message/', send_message, name='send_message'),
+
+    #================================================
 
     path('parents/', manage_parents, name='manage_parents'),
     path('parents/<int:pk>/', manage_single_parent, name='manage_single_parent'),
