@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
-from SchoolDiaryApp.models import Director, Teacher, CustomUser, Parent
+from SchoolDiaryApp.models import Director, Teacher, CustomUser, Parent, Student
 from SchoolDiaryApp.models_directory.structures import School
-from SchoolDiaryApp.models_directory.structures import Class, Grate, Subject, Classes, Message
+from SchoolDiaryApp.models_directory.structures import Class, Grate, Subject, Classes, Message, Frequency
 
 
 class SchoolSerializer(serializers.ModelSerializer):
@@ -61,6 +61,7 @@ class ClassSerializer(serializers.ModelSerializer):
     )
     school_name = serializers.CharField(source='school.name', read_only=True)  # Czytelne wyjście dla API
 
+
     class Meta:
         model = Class
         fields = ['id', 'name', 'school', 'school_name', 'supervising_teacher']
@@ -116,6 +117,8 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class ClassesSerializer(serializers.ModelSerializer):
+    teacher = TeacherSerializer()
+    subject = SubjectSerializer()
     class Meta:
         model = Classes
         fields = ['id', 'date', 'lesson_num','time', 'class_id', 'subject', 'teacher']
@@ -124,17 +127,24 @@ class ClassesSerializer(serializers.ModelSerializer):
         queryset=Class.objects.all(),
         required=True
     )
-    subject = serializers.PrimaryKeyRelatedField(
-        queryset=Subject.objects.all(),
-        required=True
-    )
-    teacher = serializers.PrimaryKeyRelatedField(
-        queryset=Teacher.objects.all(),
-        required=True
-    )
+
 
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['id', 'date', 'topic', 'content', 'read', 'sender', 'address']
+
+
+class FrequencySerializer(serializers.ModelSerializer):
+    class_id = ClassesSerializer()
+    class Meta:
+        model = Frequency
+        fields = ['id', 'type', 'student', 'class_id']
+
+
+class StudentWithFrequencySerializer(serializers.ModelSerializer):
+    frequencies = FrequencySerializer(many=True, source='students_frequency')
+    class Meta:
+        model = Student
+        fields = ['id', 'user', 'frequencies']

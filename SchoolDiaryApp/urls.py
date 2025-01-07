@@ -6,6 +6,7 @@ from SchoolDiaryApp.views.Director.classesManagment import *
 from SchoolDiaryApp.views.Director.teacherManagment import *
 from SchoolDiaryApp.views.Director.classManagmentView import *
 from SchoolDiaryApp.views.PubliclyAvailable.messagesManagmentView import *
+from SchoolDiaryApp.views.Teacher.frequencyManagment import *
 
 urlpatterns = [
     #dyrektor - zarządzanie klasami
@@ -40,6 +41,10 @@ urlpatterns = [
     # Wysyłanie nowej wiadomości
     path('send_message/', send_message, name='send_message'),
 
+
+    #zarządzanie frekwencją
+    path('classes/frequency/',class_frequency, name='class_frequency'),
+    path('students/frequency/',student_frequency, name='student_frequency'),
     #================================================
 
     path('parents/', manage_parents, name='manage_parents'),

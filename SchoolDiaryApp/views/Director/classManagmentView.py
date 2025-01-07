@@ -53,7 +53,6 @@ def class_view(request, name):
     if request.method == 'PATCH':
         school = director.school
         class_ = get_object_or_404(Class, name=name, school=school)
-        print("siema")
         supervising_teacher_id = request.data.get('supervising_teacher')
         if supervising_teacher_id:
 

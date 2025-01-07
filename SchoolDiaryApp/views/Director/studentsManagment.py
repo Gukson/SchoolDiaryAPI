@@ -35,7 +35,7 @@ def manage_students(request):
         user_serializer = CustomUserSerializer(data=request.data)
         if user_serializer.is_valid():
             user = user_serializer.save(user_type='Student')  # Typ użytkownika ustawiony na 'Student'
-            student = Student.objects.create(user=user)
+            student = Student.objects.create(user=user, school=school)
             student_serializer = StudentSerializer(student)
             return Response(student_serializer.data, status=status.HTTP_201_CREATED)
 
@@ -60,13 +60,11 @@ def manage_single_student(request, pk):
 @api_view(['POST'])
 @permission_classes([IsDirector])
 def manage_student_class(request):
-    pesel = request.data.get('pesel')
-    school_id = request.data.get('school_id')
-    class_name = request.data.get('class_name')
+    director = get_object_or_404(Director, user=request.user)
 
-    school = get_object_or_404(School, id=school_id)
-    student = get_object_or_404(Student, user__pesel=pesel, school=school)
-    student.class_id = get_object_or_404(Class, name=class_name, school=school)
+    class_name = request.data.get('class_name')
+    student = get_object_or_404(Student, id=request.data.get('student_id'), school=director.school)
+    student.class_id = get_object_or_404(Class, name=class_name, school=director.school)
     student.save()
     return Response(status=status.HTTP_200_OK)
 

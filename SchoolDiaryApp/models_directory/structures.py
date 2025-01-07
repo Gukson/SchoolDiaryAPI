@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class School(models.Model):
     name = models.CharField(max_length=255, null=False, unique=True)
 
@@ -84,7 +85,6 @@ class Announcements(models.Model):
     )
 
 class Frequency(models.Model):
-    id = models.IntegerField(primary_key=True, unique=True)
     type = models.CharField(max_length=2)
     student = models.ForeignKey(
         'SchoolDiaryApp.Student',

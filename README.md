@@ -176,7 +176,7 @@ Aktualizuje przypisanie ucznia do konkretnej klasy.
 ```json
 {
     "student_id": 1,
-    "class_id": 2
+    "class_name": "2c"
 }
 ```
 
@@ -391,6 +391,188 @@ Tworzy zajęcia cyklicznie (co tydzień lub co dwa tygodnie) w określonym przed
 ## Uwagi:
 - Endpointy `/get_received_messages/` i `/get_sent_messages/` sortują wiadomości według daty w kolejności od najnowszych do najstarszych.
 - Pola `read` pozwalają na śledzenie, czy wiadomość została odczytana.
+
+# Zarządzanie Frekwencją
+
+API umożliwia zarządzanie frekwencją uczniów dla zajęć oraz indywidualnych uczniów. Poniżej znajduje się opis endpointów, ich działania oraz przykładowych zapytań.
+
+---
+
+## 1. Zarządzanie frekwencją w klasach
+
+### **Endpoint:** `/classes/frequency/`
+**Metody:** `GET`, `POST`
+
+#### **POST**:
+Dodaje frekwencję dla uczniów w danej klasie.
+
+**Body (JSON):**
+```json
+{
+    "classes_id": 1,
+    "frequency": [
+        {
+            "student_id": 101,
+            "type": "P"  // "P" = obecność, "A" = nieobecność
+        },
+        {
+            "student_id": 102,
+            "type": "A"
+        }
+    ]
+}
+```
+
+**Odpowiedź (201 CREATED):**
+```json
+[
+    {
+        "id": 1,
+        "type": "P",
+        "student": 101,
+        "class_id": 1
+    },
+    {
+        "id": 2,
+        "type": "A",
+        "student": 102,
+        "class_id": 1
+    }
+]
+```
+
+#### **GET**:
+Zwraca listę uczniów oraz ich frekwencję w danej klasie.
+
+**Parametry URL:**
+- `class_id` - ID zajęć, dla których chcemy pobrać frekwencję.
+
+**Przykład zapytania:**
+```
+GET /api/classes/frequency/?class_id=1
+```
+
+**Odpowiedź (200 OK):**
+```json
+[
+    {
+        "id": 101,
+        "student": "John Doe",
+        "frequency": [
+            {
+                "id": 1,
+                "type": "P",
+                "class_id": 1
+            }
+        ]
+    },
+    {
+        "id": 102,
+        "student": "Jane Smith",
+        "frequency": [
+            {
+                "id": 2,
+                "type": "A",
+                "class_id": 1
+            }
+        ]
+    }
+]
+```
+
+---
+
+## 2. Zarządzanie frekwencją indywidualnego ucznia
+
+### **Endpoint:** `/students/frequency/`
+**Metody:** `GET`, `POST`, `PATCH`, `DELETE`
+
+#### **POST**:
+Dodaje frekwencję dla konkretnego ucznia w określonej klasie.
+
+**Body (JSON):**
+```json
+{
+    "student_id": 101,
+    "class_id": 1,
+    "type": "P"
+}
+```
+
+**Odpowiedź (201 CREATED):**
+```json
+{
+    "id": 1,
+    "type": "P",
+    "student": 101,
+    "class_id": 1
+}
+```
+
+#### **GET**:
+Zwraca wszystkie frekwencje dla konkretnego ucznia.
+
+**Body (JSON):**
+```json
+{
+    "student_id": 101
+}
+```
+
+**Odpowiedź (200 OK):**
+```json
+[
+    {
+        "id": 1,
+        "type": "P",
+        "class_id": 1
+    },
+    {
+        "id": 2,
+        "type": "A",
+        "class_id": 2
+    }
+]
+```
+
+#### **PATCH**:
+Aktualizuje typ frekwencji dla ucznia.
+
+**Body (JSON):**
+```json
+{
+    "frequency_id": 1,
+    "type": "A"
+}
+```
+
+**Odpowiedź (200 OK):**
+```json
+{
+    "id": 1,
+    "type": "A",
+    "class_id": 1
+}
+```
+
+#### **DELETE**:
+Usuwa wpis dotyczący frekwencji ucznia.
+
+**Body (JSON):**
+```json
+{
+    "frequency_id": 1
+}
+```
+
+**Odpowiedź (204 NO CONTENT):**
+```json
+{
+    "message": "Frequency deleted successfully."
+}
+```
+
+---
 
 ## Uwagi
 1. **Autoryzacja:** Niektóre endpointy mogą wymagać odpowiednich uprawnień (np. rola `Director`).
