@@ -138,7 +138,10 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    'USER_ID_FIELD': 'login'
+    'USER_ID_FIELD': 'login',
+    'SERIALIZERS': {
+        'current_user': 'SchoolDiaryApp.serializers.CustomUserSerializer',  # Wskaż swój serializator
+    }
 }
 
 CORS_ALLOWED_ORIGINS = [
