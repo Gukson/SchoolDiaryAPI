@@ -8,6 +8,7 @@ from SchoolDiaryApp.views.Director.classManagmentView import *
 from SchoolDiaryApp.views.PubliclyAvailable.messagesManagmentView import *
 from SchoolDiaryApp.views.Teacher.frequencyManagment import *
 from SchoolDiaryApp.views.Student.gratesManagment import *
+from SchoolDiaryApp.views.PubliclyAvailable.announcementsManagment import *
 
 urlpatterns = [
 
@@ -23,7 +24,13 @@ urlpatterns = [
 
     # Wysyłanie nowej wiadomości
     path('send_message/', send_message, name='send_message'),
-    
+
+    #odbieranie ogłoszeń
+    path('get_announcements/',get_announcements,name='get_announcements'),
+
+    #wysyłanei ogłoszeń
+    path('post_announcements/',post_announcements,name='get_announcements'),
+
 
 
 

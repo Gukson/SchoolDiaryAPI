@@ -69,10 +69,9 @@ class Grate(models.Model):
     )
 
 class Announcements(models.Model):
-    id = models.IntegerField(primary_key=True, unique=True)
     topic = models.CharField(max_length=255)
     content = models.TextField(max_length=1000)
-    date = models.DateField()
+    date = models.DateTimeField(auto_now_add=True)
     school = models.ForeignKey(
         School,
         on_delete=models.PROTECT,

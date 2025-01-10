@@ -657,9 +657,126 @@ Jeśli uczeń ma dwie oceny:
     }
 ]
 ```
+# API Ogłoszeń
+
+To API umożliwia użytkownikom pobieranie i tworzenie ogłoszeń dla szkoły, do której należą. Dostęp do tych endpointów mają wyłącznie użytkownicy będący częścią grupy związanej ze szkołą (Dyrektor, Nauczyciel lub Uczeń).
 
 ---
 
-## Uwagi
-1. **Autoryzacja:** Niektóre endpointy mogą wymagać odpowiednich uprawnień (np. rola `Director`).
-2. *
+## Endpointy
+
+### 1. Pobieranie ogłoszeń
+
+- **URL:** `/get_announcements/`
+- **Metoda:** `GET`
+- **Wymagane uprawnienia:** 
+  - Dyrektor
+  - Nauczyciel
+  - Uczeń
+
+#### Opis:
+Pobiera wszystkie ogłoszenia dla szkoły, do której należy zalogowany użytkownik. Ogłoszenia są sortowane według daty malejąco.
+
+#### Przykład żądania:
+```http
+GET /get_announcements/ HTTP/1.1
+Authorization: Token <TOKEN_UŻYTKOWNIKA>
+```
+
+#### Przykład odpowiedzi:
+```json
+[
+    {
+        "id": 1,
+        "topic": "Szkoła zamknięta",
+        "content": "Szkoła będzie zamknięta w poniedziałek z powodu konserwacji.",
+        "date": "2025-01-15",
+        "author": 3
+    },
+    {
+        "id": 2,
+        "topic": "Nowości w bibliotece",
+        "content": "Nowe książki są już dostępne w bibliotece.",
+        "date": "2025-01-10",
+        "author": 4
+    }
+]
+```
+
+#### Przykład odpowiedzi w przypadku braku uprawnień:
+Jeśli użytkownik nie należy do grupy związanej ze szkołą:
+```json
+{
+    "error": "Użytkownik nie należy do grupy związanej ze szkołą."
+}
+```
+
+---
+
+### 2. Tworzenie ogłoszeń
+
+- **URL:** `/post_announcements/`
+- **Metoda:** `POST`
+- **Wymagane uprawnienia:** 
+  - Dyrektor
+  - Nauczyciel
+
+#### Opis:
+Pozwala Dyrektorom i Nauczycielom tworzyć ogłoszenia dla ich szkoły.
+
+#### Przykład żądania:
+```http
+POST /post_announcements/ HTTP/1.1
+Authorization: Token <TOKEN_UŻYTKOWNIKA>
+Content-Type: application/json
+
+{
+    "topic": "Spotkanie z rodzicami",
+    "content": "Spotkanie z rodzicami odbędzie się w piątek o godzinie 10:00.",
+    "date": "2025-01-20"
+}
+```
+
+#### Przykład odpowiedzi:
+```json
+{
+    "id": 3,
+    "topic": "Spotkanie z rodzicami",
+    "content": "Spotkanie z rodzicami odbędzie się w piątek o godzinie 10:00.",
+    "date": "2025-01-20",
+    "author": 5
+}
+```
+
+#### Przykład odpowiedzi w przypadku błędu:
+1. Jeśli użytkownik nie należy do grupy związanej ze szkołą:
+    ```json
+    {
+        "error": "Użytkownik nie należy do grupy związanej ze szkołą."
+    }
+    ```
+
+2. Jeśli dane żądania są nieprawidłowe:
+    ```json
+    {
+        "topic": [
+            "To pole jest wymagane."
+        ],
+        "content": [
+            "To pole jest wymagane."
+        ],
+        "date": [
+            "To pole jest wymagane."
+        ]
+    }
+    ```
+
+---
+
+## Uwagi:
+- **Autoryzacja:** Oba endpointy wymagają, aby użytkownik podał ważny token.
+- **Uprawnienia:** 
+  - Tylko Dyrektorzy i Nauczyciele mogą tworzyć ogłoszenia.
+  - Uczniowie mogą jedynie przeglądać ogłoszenia.
+
+---

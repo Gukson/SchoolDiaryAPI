@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from SchoolDiaryApp.models import Director, Teacher, CustomUser, Parent, Student
 from SchoolDiaryApp.models_directory.structures import School
-from SchoolDiaryApp.models_directory.structures import Class, Grate, Subject, Classes, Message, Frequency
+from SchoolDiaryApp.models_directory.structures import Class, Grate, Subject, Classes, Message, Frequency, Announcements
 
 
 class SchoolSerializer(serializers.ModelSerializer):
@@ -151,3 +151,8 @@ class GroupedGradesSerializer(serializers.Serializer):
                 "grades": serialized_grades
             })
         return result
+
+class AnnouncementsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Announcements
+        fields = ['id', 'topic', 'content', 'date', 'school', 'author']
