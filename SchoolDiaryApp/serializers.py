@@ -75,32 +75,7 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'parent']
 
 from rest_framework import serializers
-from collections import defaultdict
 
-
-
-class GroupedGradesSerializer(serializers.Serializer):
-    subject = serializers.CharField()
-    scores = serializers.ListField(child=serializers.DecimalField(max_digits=5, decimal_places=2))
-
-    @staticmethod
-    def group_by_subject(grades):
-        grouped = defaultdict(list)
-        for grade in grades:
-            subject_name = grade.class_id.subject  # Pobieramy nazwę przedmiotu z class_id.subject
-            grouped[subject_name].append(grade.score)
-        return grouped
-
-    def to_representation(self, instance):
-        grouped_grades = self.group_by_subject(instance)
-        result = []
-        for subject, grade_objects in grouped_grades.items():
-            serialized_grades = GradeSerializer(grade_objects, many=True).data
-            result.append({
-                "subject": subject,
-                "grades": serialized_grades
-            })
-        return result
 
 
 class GradeSerializer(serializers.ModelSerializer):
@@ -148,3 +123,31 @@ class StudentWithFrequencySerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['id', 'user', 'frequencies']
+
+
+class GroupedGradesSerializer(serializers.Serializer):
+    subject = serializers.CharField()
+    grades = serializers.ListField(child=GradeSerializer())
+
+    @staticmethod
+    def group_by_subject(subjects, grades):
+        grouped = {subject.name: [] for subject in subjects}
+        for grade in grades:
+            subject_name = grade.class_id.subject.name  # Pobierz nazwę przedmiotu
+            if subject_name in grouped:
+                grouped[subject_name].append(grade)
+        return grouped
+
+    def to_representation(self, instance):
+        school = instance.user.school
+        subjects = Subject.objects.filter(school=school)
+        grades = instance.grades.all()  # Jeśli istnieje relacja `grades` w modelu ucznia
+        grouped_grades = self.group_by_subject(subjects, grades)
+        result = []
+        for subject, grade_objects in grouped_grades.items():
+            serialized_grades = GradeSerializer(grade_objects, many=True).data
+            result.append({
+                "subject": subject,
+                "grades": serialized_grades
+            })
+        return result

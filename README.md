@@ -573,6 +573,92 @@ Usuwa wpis dotyczący frekwencji ucznia.
 ```
 
 ---
+# Endpoint: Pobieranie ocen ucznia
+
+## Opis
+
+Endpoint umożliwia zalogowanemu uczniowi pobranie wszystkich ocen, które zostały mu przypisane.
+
+---
+
+## Ścieżka
+
+**URL:** `/students/grates/`  
+**Metody:** `GET`
+
+---
+
+## Wymagania
+
+- Użytkownik musi być zalogowany.
+- Użytkownik musi być powiązany z modelem `Student` (czyli być uczniem).
+
+---
+
+## Przykład żądania
+
+### Zapytanie HTTP:
+**GET** `/students/grates/`
+
+**Nagłówki:**
+```http
+Authorization: Token <your_auth_token>
+```
+
+---
+
+## Przykład odpowiedzi
+
+Jeśli uczeń ma dwie oceny:
+
+```json
+[
+    {
+        "subject": "Matematyka",
+        "grades": [
+            {
+                "id": 1,
+                "value": 5.0,
+                "weight": 1,
+                "description": "Test 1",
+                "class_id": 101,
+                "category": "Sprawdzian"
+            },
+            {
+                "id": 2,
+                "value": 4.0,
+                "weight": 1,
+                "description": "Test 2",
+                "class_id": 101,
+                "category": "Kartkówka"
+            }
+        ]
+    },
+    {
+        "subject": "Fizyka",
+        "grades": [
+            {
+                "id": 3,
+                "value": 3.0,
+                "weight": 2,
+                "description": "Sprawdzian",
+                "class_id": 102,
+                "category": "Sprawdzian"
+            },
+            {
+                "id": 4,
+                "value": 2.5,
+                "weight": 1,
+                "description": "Kartkówka",
+                "class_id": 102,
+                "category": "Kartkówka"
+            }
+        ]
+    }
+]
+```
+
+---
 
 ## Uwagi
 1. **Autoryzacja:** Niektóre endpointy mogą wymagać odpowiednich uprawnień (np. rola `Director`).
