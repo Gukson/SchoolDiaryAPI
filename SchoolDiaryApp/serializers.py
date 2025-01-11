@@ -10,41 +10,17 @@ class SchoolSerializer(serializers.ModelSerializer):
         model = School
         fields = ['id', 'name']
 
-from SchoolDiaryApp.serializers import *
+
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    student = StudentSerializer()
-    teacher = TeacherSerializer()
-    director = DirectorSerializer()
-    parent = ParentSerializer()
-
     class Meta:
         model = CustomUser
         fields = [
             'id', 'pesel', 'login', 'Name', 'Surname',
-            'birth_date', 'user_type', 'username', 'email',
-            'student', 'teacher', 'director', 'parent'
+            'birth_date', 'user_type', 'username', 'email'
         ]
 
-    def get_student(self, obj):
-        if hasattr(obj, 'student'):
-            return StudentSerializer(obj.student).data
-        return None
 
-    def get_teacher(self, obj):
-        if hasattr(obj, 'teacher'):
-            return TeacherSerializer(obj.teacher).data
-        return None
-
-    def get_director(self, obj):
-        if hasattr(obj, 'director'):
-            return DirectorSerializer(obj.director).data
-        return None
-
-    def get_parent(self, obj):
-        if hasattr(obj, 'parent'):
-            return ParentSerializer(obj.parent).data
-        return None
 
 
 class DirectorSerializer(serializers.ModelSerializer):
@@ -134,6 +110,8 @@ class ClassesSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    sender = CustomUserSerializer()
+    address = CustomUserSerializer()
     class Meta:
         model = Message
         fields = ['id', 'date', 'topic', 'content', 'read', 'sender', 'address']
