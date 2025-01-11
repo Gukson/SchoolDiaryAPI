@@ -10,12 +10,13 @@ class SchoolSerializer(serializers.ModelSerializer):
         model = School
         fields = ['id', 'name']
 
+from SchoolDiaryApp.serializers import *
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    student = serializers.SerializerMethodField()
-    teacher = serializers.SerializerMethodField()
-    director = serializers.SerializerMethodField()
-    parent = serializers.SerializerMethodField()
+    student = StudentSerializer()
+    teacher = TeacherSerializer()
+    director = DirectorSerializer()
+    parent = ParentSerializer()
 
     class Meta:
         model = CustomUser
