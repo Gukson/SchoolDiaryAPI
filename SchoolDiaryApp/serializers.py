@@ -6,10 +6,6 @@ from SchoolDiaryApp.models_directory.structures import Class, Grate, Subject, Cl
 
 
 class SchoolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = School
-        fields = ['id', 'name']
-
 
     student = serializers.SerializerMethodField()
     teacher = serializers.SerializerMethodField()
