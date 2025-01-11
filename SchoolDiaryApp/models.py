@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUser
 from SchoolDiaryApp.models_directory.structures import *
 from datetime import date
 
+from SchoolDiaryApp.views import Student
+
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
         if not email:
@@ -36,7 +39,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
     USER_TYPE_CHOICES = (
-        ('Student', 'Uczeń'),
+        ('Student', 'Student'),
         ('Teacher', 'Nauczyciel'),
         ('Director', 'Dyrektor'),
         ('Parent', 'Rodzic'),

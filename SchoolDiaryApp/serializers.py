@@ -11,13 +11,42 @@ class SchoolSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
-class CustomUserSerializer(serializers.ModelSerializer):
+    student = serializers.SerializerMethodField()
+    teacher = serializers.SerializerMethodField()
+    director = serializers.SerializerMethodField()
+    parent = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomUser
         fields = [
             'id', 'pesel', 'login', 'Name', 'Surname',
-            'birth_date', 'user_type', 'username', 'email'
+            'birth_date', 'user_type', 'username', 'email',
+            'student', 'teacher', 'director', 'parent'
         ]
+
+    def get_student(self, obj):
+        if hasattr(obj, 'student'):
+            from SchoolDiaryApp.serializers import StudentSerializer
+            return StudentSerializer(obj.student).data
+        return None
+
+    def get_teacher(self, obj):
+        if hasattr(obj, 'teacher'):
+            from SchoolDiaryApp.serializers import TeacherSerializer
+            return TeacherSerializer(obj.teacher).data
+        return None
+
+    def get_director(self, obj):
+        if hasattr(obj, 'director'):
+            from SchoolDiaryApp.serializers import DirectorSerializer
+            return DirectorSerializer(obj.director).data
+        return None
+
+    def get_parent(self, obj):
+        if hasattr(obj, 'parent'):
+            from SchoolDiaryApp.serializers import ParentSerializer
+            return ParentSerializer(obj.parent).data
+        return None
 
 
 class DirectorSerializer(serializers.ModelSerializer):
@@ -31,10 +60,11 @@ class DirectorSerializer(serializers.ModelSerializer):
 
 class TeacherSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
+    schoolID = SchoolSerializer()
 
     class Meta:
         model = Teacher
-        fields = ['id', 'user']
+        fields = ['id', 'user', 'schoolID']
 
 
 class AdminSerializer(serializers.ModelSerializer):

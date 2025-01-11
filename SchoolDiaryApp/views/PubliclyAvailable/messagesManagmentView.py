@@ -87,3 +87,7 @@ def update_message_status(request, message_id):
         {"message": "Status wiadomości został zaktualizowany."},
         status=status.HTTP_200_OK
     )
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_students(request):
