@@ -24,21 +24,20 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 
 class DirectorSerializer(serializers.ModelSerializer):
-    schoolID = SchoolSerializer()
+    school = SchoolSerializer()
     user = CustomUserSerializer()
 
     class Meta:
         model = Director
-        fields = ['id', 'schoolID', 'user']
+        fields = ['id', 'school', 'user']
 
 
 class TeacherSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
-    schoolID = SchoolSerializer()
 
     class Meta:
         model = Teacher
-        fields = ['id', 'user', 'schoolID']
+        fields = ['id', 'user']
 
 
 class AdminSerializer(serializers.ModelSerializer):
