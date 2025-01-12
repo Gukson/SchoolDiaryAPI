@@ -780,3 +780,80 @@ Content-Type: application/json
   - Uczniowie mogą jedynie przeglądać ogłoszenia.
 
 ---
+# School Management API - Zarządzanie Użytkownikami
+
+API pozwala na zarządzanie różnymi grupami użytkowników w systemie szkolnym: Studentami, Nauczycielami, Dyrektorami oraz Administratorami. Poniżej znajduje się opis działania poszczególnych endpointów.
+
+---
+
+## Endpointy
+
+### 1. Zarządzanie studentami
+
+#### **Lista wszystkich studentów**
+- **URL:** `/students/`
+- **Metody:** `GET`
+
+##### **GET**:
+Zwraca listę wszystkich studentów w systemie, pogrupowanych według szkół, jeśli dyrektor lub nauczyciel dokonuje zapytania.
+
+**Przykład odpowiedzi:**
+```json
+[
+    {
+        "school": "High School No. 1",
+        "students": [
+            {
+                "id": 1,
+                "name": "John Doe",
+                "class": "10A"
+            },
+            {
+                "id": 2,
+                "name": "Jane Smith",
+                "class": "10B"
+            }
+        ]
+    },
+    {
+        "school": "High School No. 2",
+        "students": [
+            {
+                "id": 3,
+                "name": "Alice Johnson",
+                "class": "11A"
+            }
+        ]
+    }
+]
+```
+
+---
+
+### 2. Zarządzanie nauczycielami
+
+#### **Lista wszystkich nauczycieli**
+- **URL:** `/teachers/`
+- **Metody:** `GET`
+
+##### **GET**:
+- Dyrektor: Otrzymuje listę nauczycieli pracujących w jego szkole.
+- Nauczyciel: Otrzymuje listę nauczycieli pracujących w szkołach, w których sam uczy.
+- Administrator: Otrzymuje pełną listę nauczycieli.
+- Student: Otrzymuje listę nauczycieli uczących w jego szkole.
+
+**Przykład odpowiedzi:**
+```json
+[
+    {
+        "id": 1,
+        "name": "John Teacher",
+        "subjects": ["Math", "Physics"]
+    },
+    {
+        "id": 2,
+        "name": "Jane Teacher",
+        "subjects": ["History", "Geography"]
+    }
+]
+```

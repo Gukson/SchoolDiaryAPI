@@ -33,6 +33,11 @@ urlpatterns = [
     path('post_announcements/',post_announcements,name='get_announcements'),
 
     path('me/', who_am_i, name='who_am_i'),
+    path('students/', get_students, name='get_students'),
+    path('teachers/',get_teachers,name='get_teachers' ),
+    path('admins/',get_admins,name='get_admins'),
+    path('directors/',get_directors,name='get_directors'),
+
 
 
 
