@@ -93,10 +93,10 @@ def update_message_status(request, message_id):
 
 
 @api_view(['GET'])
-@permission_classes([IsDirector, IsTeacher, IsAdministrator])  # Dopuszczamy dostęp dla dyrektora i nauczyciela
 def get_students(request):
     user = request.user
     students_by_school = defaultdict(list)
+    print(user.groups.all())
 
     if user.groups.filter(name='Director').exists():
         director = get_object_or_404(Director, user=user)
@@ -139,7 +139,6 @@ def get_students(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsDirector, IsTeacher, IsAdministrator, IsStudent])
 def get_teachers(request):
     user = request.user
     if user.groups.filter(name='Director').exists():
@@ -174,7 +173,6 @@ def get_teachers(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsDirector, IsTeacher, IsAdministrator, IsStudent])
 def get_directors(request):
     user = request.user
     if user.groups.filter(name='Director').exists():
@@ -212,7 +210,6 @@ def get_directors(request):
                     status=status.HTTP_403_FORBIDDEN)
 
 @api_view(['GET'])
-@permission_classes([IsDirector,IsTeacher,IsAdministrator, IsTeacher])
 def get_admins(request):
     admins = Admin.objects.all()
     serializer = AdminSerializer(admins, many=True)
