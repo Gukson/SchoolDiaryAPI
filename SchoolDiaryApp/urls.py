@@ -47,12 +47,12 @@ urlpatterns = [
     path('schools/classes/<str:name>/', class_view, name='class_management'),
 
     #dyrektor - zarządzanie uczniami
-    path('students/', manage_students, name='manage_students'),
+    # path('students/', manage_students, name='manage_students'),
     path('students/<int:pk>/', manage_single_student, name='manage_single_student'),
     path('students/class/', manage_student_class, name='manage_student_class'),
 
     #dyrektor - zarządzanie nauczycielami
-    path('teachers/', manage_teachers, name='manage_teachers'),
+    # path('teachers/', manage_teachers, name='manage_teachers'),
     path('teachers/<int:pk>/', manage_single_teacher, name='manage_single_teacher'),
 
     #dyrektor - zarządzanie zajęciami
