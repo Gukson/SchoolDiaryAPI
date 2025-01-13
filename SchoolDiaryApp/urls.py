@@ -78,9 +78,9 @@ urlpatterns = [
     path('parents/', manage_parents, name='manage_parents'),
     path('parents/<int:pk>/', manage_single_parent, name='manage_single_parent'),
 
-    path('directors/', manage_directors, name='manage_directors'),
+    # path('directors/', manage_directors, name='manage_directors'),
     path('directors/<int:pk>/', manage_single_director, name='manage_single_director'),
-    path('admins/', manage_admins, name='manage_admins'),
+    # path('admins/', manage_admins, name='manage_admins'),
     path('admins/<int:pk>/', manage_single_admin, name='manage_single_admin'),
     path('schools/',school_view,name='school_view'),
 
