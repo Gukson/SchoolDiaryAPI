@@ -49,7 +49,7 @@ urlpatterns = [
     #dyrektor - zarządzanie uczniami
     path('students/<int:pk>/', manage_single_student, name='manage_single_student'),
     path('students/class/', manage_student_class, name='manage_student_class'),
-
+    path('teachers/', manage_teachers, name='manage_teachers'),
     #dyrektor - zarządzanie nauczycielami
     path('teachers/<int:pk>/', manage_single_teacher, name='manage_single_teacher'),
 

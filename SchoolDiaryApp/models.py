@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUser
 from SchoolDiaryApp.models_directory.structures import *
 from datetime import date
 
-from SchoolDiaryApp.views import Student
 
 
 class CustomUserManager(BaseUserManager):

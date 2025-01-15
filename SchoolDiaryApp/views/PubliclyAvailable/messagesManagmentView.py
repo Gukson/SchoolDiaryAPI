@@ -109,10 +109,15 @@ def get_students(request):
     elif user.groups.filter(name='Teacher').exists():
         teacher = get_object_or_404(Teacher, user=user)
 
+
+
         classes_taught = Classes.objects.filter(teacher=teacher)
 
-        schools = School.objects.filter(classes__in=classes_taught).distinct()
+        print("siema")
+        #TODO zmienić to
+        schools = School.objects.filter(classes_school=classes_taught).distinct()
 
+        print("siema1")
         students = Student.objects.filter(class_id__school__in=schools)
         for student in students:
             school_name = student.class_id.school.name

@@ -8,7 +8,7 @@ from SchoolDiaryApp.permissions import IsDirector
 
 # Zarządzanie nauczycielami
 
-@api_view(['GET', 'POST', 'DELETE'])
+@api_view(['POST', 'DELETE'])
 @permission_classes([IsDirector])
 def manage_teachers(request):
     if request.method == 'GET':
