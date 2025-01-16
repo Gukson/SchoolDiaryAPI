@@ -20,9 +20,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'birth_date', 'user_type', 'username', 'email'
         ]
 
-
-
-
 class DirectorSerializer(serializers.ModelSerializer):
     school = SchoolSerializer()
     user = CustomUserSerializer()
@@ -37,7 +34,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = ['id', 'user']
+        fields = ['id', 'user', 'school']
 
 
 class AdminSerializer(serializers.ModelSerializer):
@@ -74,8 +71,8 @@ class StudentSerializer(serializers.ModelSerializer):
     parent = ParentSerializer()
 
     class Meta:
-        model = CustomUser
-        fields = ['id', 'user', 'parent']
+        model = Student
+        fields = ['id', 'user', 'parent', 'school', 'class_id']
 
 from rest_framework import serializers
 
