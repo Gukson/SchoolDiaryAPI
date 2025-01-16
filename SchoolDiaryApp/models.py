@@ -100,6 +100,13 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.PROTECT)
+    school = models.ForeignKey(
+        School,
+        on_delete=models.PROTECT,
+        related_name='teachers_school',
+        null=True,
+        blank=True
+    )
 
 class Director(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.PROTECT)
