@@ -13,7 +13,7 @@ from SchoolDiaryApp.permissions import IsTeacher, IsStudent
 def class_frequency(request):
     if request.method == 'POST':
         data = request.data
-        class_id = data.get('classes_id')
+        class_id = data.get('class_id')
 
         if not class_id or 'frequency' not in data:
             return Response(

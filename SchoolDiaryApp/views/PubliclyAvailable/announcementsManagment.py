@@ -9,7 +9,6 @@ from rest_framework.response import Response
 
 
 @api_view(['GET'])
-@permission_classes([IsDirector, IsTeacher, IsStudent])
 def get_announcements(request):
     user = request.user
     if user.groups.filter(name='Director').exists():
@@ -18,7 +17,7 @@ def get_announcements(request):
 
     elif user.groups.filter(name='Teacher').exists():
         teacher = get_object_or_404(Teacher, user=user)
-        school = School.objects.filter(classes__supervising_teacher=teacher).distinct().first()
+        school = teacher.school
 
     elif user.groups.filter(name='Student').exists():
         student = get_object_or_404(Student, user=user)
@@ -33,7 +32,6 @@ def get_announcements(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsDirector, IsTeacher])
 def post_announcements(request):
     user = request.user
     if user.groups.filter(name='Director').exists():

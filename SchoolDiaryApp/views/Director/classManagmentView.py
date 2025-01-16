@@ -10,10 +10,11 @@ from SchoolDiaryApp.models import Student, Teacher, Director
 from SchoolDiaryApp.serializers import ClassSerializer, StudentSerializer
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PATCH', 'DELETE'])
 @permission_classes([IsDirector])
 def classes_view(request):
     director = get_object_or_404(Director, user=request.user)
+    data = request.data
     try:
         school = director.school
     except School.DoesNotExist:
@@ -34,26 +35,10 @@ def classes_view(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['GET', 'PATCH', 'DELETE'])
-@permission_classes([IsDirector])
-def class_view(request, name):
-    director = get_object_or_404(Director, user=request.user)
-    if request.method == 'GET':
-        school = director.school
-        try:
-            class_ = Class.objects.get(name=name, school=school)
-        except Class.DoesNotExist:
-            return Response({'error': 'Class not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        students = Student.objects.filter(class_id=class_)
-        serializer = StudentSerializer(students, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     if request.method == 'PATCH':
         school = director.school
-        class_ = get_object_or_404(Class, name=name, school=school)
-        supervising_teacher_id = request.data.get('supervising_teacher')
+        class_ = get_object_or_404(Class, id=data["class_id"], school=school)
+        supervising_teacher_id = data.get('teacher_id')
         if supervising_teacher_id:
 
             teacher = get_object_or_404(Teacher, id=supervising_teacher_id)
@@ -70,7 +55,7 @@ def class_view(request, name):
 
     if request.method == 'DELETE':
         school = director.school
-        class_ = get_object_or_404(Class, name=name, school=school)
+        class_ = get_object_or_404(Class, id=data["class_id"], school=school)
         class_.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
