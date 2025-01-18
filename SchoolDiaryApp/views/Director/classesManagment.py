@@ -6,7 +6,7 @@ from datetime import timedelta, datetime
 from SchoolDiaryApp.models_directory.structures import Classes, Class, Subject
 from SchoolDiaryApp.models import Teacher, Director
 from SchoolDiaryApp.serializers import SubjectSerializer, ClassSerializer, ClassesSerializer
-from SchoolDiaryApp.permissions import IsDirector
+from SchoolDiaryApp.permissions import IsDirector, IsStudent
 
 @api_view(['GET','POST'])
 @permission_classes([IsDirector])

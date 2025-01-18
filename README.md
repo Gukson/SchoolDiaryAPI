@@ -14,6 +14,8 @@ API umożliwia zarządzanie szkołami, klasami, uczniami oraz nauczycielami w sy
 - [wiadomości](#wiadomości)
 - [klasy](#zarządzanie-klasami)
 - [zajęcia](#zarządzanie-zajęciami)
+  - [dodawanie zajęć](#dodawanie-zajęć)
+  - [pobieranie zajęć ucznia](#pobieranie-planu-zajęć-przez-ucznia)
 - [Frekwencja](#zarządzanie-frekwencją)
   - [Frekwencja klasy](#zarządzanie-frekwencją-klasy)
   - [Frekwencja_Ucznia](#zarządzanie-frekwencją-indywidualnego-ucznia)
@@ -320,6 +322,8 @@ Można zmieniać nazwę i wychowawcę - nie trzeba zmianiać obu rzeczy na raz
 
 
 ## Zarządzanie zajęciami
+
+## Dodawanie zajęć
 - **URL:** `/classes/`
 - **Metody:** `GET` `POST` 
 
@@ -346,6 +350,10 @@ Tworzy zajęcia cyklicznie (co tydzień lub co dwa tygodnie) w określonym przed
     "message": "Utworzono 11 zajęć cyklicznych."
 }
 ```
+
+## Pobieranie planu zajęć przez ucznia
+- **URL:** `/students/classes`
+- **Metody:** `GET` 
 
 
 ## Zarządzanie frekwencją
