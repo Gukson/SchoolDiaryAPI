@@ -20,7 +20,7 @@ def manage_teachers(request):
         director = Director.objects.get(user=user)
         user_serializer = CustomUserSerializer(data=request.data)
         if user_serializer.is_valid():
-            user = user_serializer.save(user_type='Teacher')  # Domyślnie typ użytkownika ustawiony na "Teacher"
+            user = user_serializer.save(user_type='Teacher')
             teacher = Teacher.objects.create(user=user, school=director.school)
             teacher_serializer = TeacherSerializer(teacher)
             return Response(teacher_serializer.data, status=status.HTTP_201_CREATED)
