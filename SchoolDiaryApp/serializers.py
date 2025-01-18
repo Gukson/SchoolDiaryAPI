@@ -17,7 +17,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = [
-            'id', 'pesel', 'login', 'Name', 'Surname',
+            'id', 'pesel', 'login', 'Name', 'Surname', 'password',
             'birth_date', 'user_type', 'username', 'email'
         ]
         extra_kwargs = {'password': {'write_only': True}}
@@ -164,3 +164,7 @@ class AnnouncementsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Announcements
         fields = ['id', 'topic', 'content', 'date', 'school', 'author']
+
+
+# class GrateSerializer:
+#     pass
