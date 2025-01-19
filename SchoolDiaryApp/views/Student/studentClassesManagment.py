@@ -14,8 +14,8 @@ from django.utils.timezone import now
 def get_student_classes(request):
     student = get_object_or_404(Student, user=request.user)
     today = now().date()
-    start_of_week = today - timedelta(days=today.weekday())  # Poniedziałek
-    end_of_week = start_of_week + timedelta(days=6)  # Niedziela
+    start_of_week = today - timedelta(days=today.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
 
     # Filtruj zajęcia
     classes = Classes.objects.filter(

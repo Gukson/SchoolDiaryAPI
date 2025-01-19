@@ -82,7 +82,7 @@ def create_recurring_classes(request):
         serializer = ClassesSerializer(classes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 @permission_classes([IsDirector])  # Dostęp tylko dla dyrektorów
 def subject_view(request):
     director = get_object_or_404(Director, user=request.user)
@@ -114,3 +114,9 @@ def subject_view(request):
         subjects = Subject.objects.filter(school=school)
         serializer = SubjectSerializer(subjects, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    if request.method == "DELETE":
+        subject_id = request.data.get('subject_id')
+        subject = get_object_or_404(Subject, id=subject_id, school=school)
+        subject.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -10,6 +10,7 @@ from SchoolDiaryApp.views.Student.gratesManagment import *
 from SchoolDiaryApp.views.PubliclyAvailable.announcementsManagment import *
 from SchoolDiaryApp.views.PubliclyAvailable.meManagment import *
 from SchoolDiaryApp.views.Student.studentClassesManagment import *
+from SchoolDiaryApp.views.Teacher.teacherClassesManagment import *
 
 urlpatterns = [
 
@@ -40,6 +41,7 @@ urlpatterns = [
 
     #Zarządzanie zajęciami
     path('classes/', create_recurring_classes, name='create_recurring_classes'),
+    path('teachers/classes/', get_teacher_classes, name='get_teacher_classes'),
 
     # zarządzanie frekwencją
     path('classes/frequency/', class_frequency, name='class_frequency'),
