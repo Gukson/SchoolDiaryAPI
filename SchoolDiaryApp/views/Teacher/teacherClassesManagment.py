@@ -9,7 +9,7 @@ from SchoolDiaryApp.permissions import  IsTeacher
 from datetime import datetime
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([IsTeacher])
 def get_teacher_classes(request):
     teacher = get_object_or_404(Teacher, user=request.user)
