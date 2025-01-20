@@ -98,6 +98,7 @@ class SubjectSerializer(serializers.ModelSerializer):
 class ClassesSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
     subject = SubjectSerializer()
+    class_id = ClassSerializer()
     class Meta:
         model = Classes
         fields = ['id', 'date', 'lesson_num','time', 'class_id', 'subject', 'teacher']
