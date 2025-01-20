@@ -16,6 +16,6 @@ def get_teacher_classes(request):
     date = request.data.get('date')
     parsed_date = datetime.strptime(date, '%Y-%m-%d').date()
 
-    classes = Classes.objects.filter(teacher=teacher, date=parsed_date).order_by('lesson_number')
+    classes = Classes.objects.filter(teacher=teacher, date=parsed_date).order_by('lesson_num')
     serializer = ClassesSerializer(classes, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
