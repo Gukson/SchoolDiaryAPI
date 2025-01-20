@@ -9,9 +9,13 @@ from SchoolDiaryApp.models import Student
 
 
 @api_view(['GET'])
-@permission_classes([IsStudent])  # Wymaga zalogowania
-def get_student_grades(request):
+def get_grouped_grades(request):
+    # Pobierz studenta na podstawie aktualnie zalogowanego użytkownika
     student = get_object_or_404(Student, user=request.user)
-    grades = Grate.objects.filter(student=student)
-    serializer = GroupedGradesSerializer(grades, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Przekaż instancję studenta do serializatora
+    serializer = GroupedGradesSerializer()
+    serialized_data = serializer.to_representation(student)
+
+    # Zwróć zserializowane dane jako odpowiedź
+    return Response(serialized_data)

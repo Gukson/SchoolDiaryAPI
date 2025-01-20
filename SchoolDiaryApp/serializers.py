@@ -87,14 +87,12 @@ from rest_framework import serializers
 class GradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grate
-        fields = ['id', 'value', 'weight', 'description', 'class_id', 'category']
-
+        fields = ['id', 'value', 'weight', 'category', 'description']
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        fields = ['id', 'name', 'school']  # Dodajemy również pole `school`, jeśli jest wymagane
-        read_only_fields = ['id', 'school']  # `school` będzie tylko do odczytu
+        fields = ['id', 'name', 'school']
 
 
 class ClassesSerializer(serializers.ModelSerializer):
@@ -132,39 +130,78 @@ class StudentWithFrequencySerializer(serializers.ModelSerializer):
         model = Student
         fields = ['id', 'user', 'frequencies']
 
+class StudentWithGradesSerializer(serializers.ModelSerializer):
+    grades = serializers.SerializerMethodField()
 
-class GroupedGradesSerializer(serializers.Serializer):
-    subject = serializers.CharField()
-    grades = serializers.ListField(child=GradeSerializer())
+    class Meta:
+        model = Student
+        fields = ['id', 'user', 'grades']
+        depth = 1
+
+    def get_grades(self, obj):
+        # Pobierz klasę i przedmiot z kontekstu
+        class_ = self.context.get('class_')
+        subject = class_.subject if class_ else None
+
+        # Filtrowanie ocen na podstawie przedmiotu i klasy
+        if subject:
+            grades = obj.grades.filter(class_id=class_, class_id__subject=subject)
+        else:
+            grades = obj.grades.all()
+
+        # Serializacja ocen
+        return GradeSerializer(grades, many=True).data
+
+class SubjectWithGradesSerializer(serializers.Serializer):
+    subject = SubjectSerializer()  # Serializuje pojedynczy przedmiot
+    grades = GradeSerializer(many=True)  # Serializuje listę ocen
 
     @staticmethod
-    def group_by_subject(subjects, grades):
-        grouped = {subject.name: [] for subject in subjects}
-        for grade in grades:
-            subject_name = grade.class_id.subject.name  # Pobierz nazwę przedmiotu
-            if subject_name in grouped:
-                grouped[subject_name].append(grade)
-        return grouped
+    def from_subject_and_grades(subject, grades):
+        return {
+            "subject": SubjectSerializer(subject).data,
+            "grades": GradeSerializer(grades, many=True).data
+        }
 
-    def to_representation(self, instance):
-        school = instance.user.school
+
+class GroupedGradesSerializer(serializers.Serializer):
+    grouped_grades = serializers.SerializerMethodField()
+
+    def get_grouped_grades(self, instance):
+        if not isinstance(instance, Student):
+            raise ValueError("The instance must be of type 'Student'.")
+
+        # Pobierz szkołę ucznia
+        school = instance.class_id.school
+
+        # Pobierz wszystkie przedmioty w tej szkole
         subjects = Subject.objects.filter(school=school)
-        grades = instance.grades.all()  # Jeśli istnieje relacja `grades` w modelu ucznia
-        grouped_grades = self.group_by_subject(subjects, grades)
-        result = []
-        for subject, grade_objects in grouped_grades.items():
-            serialized_grades = GradeSerializer(grade_objects, many=True).data
-            result.append({
-                "subject": subject,
-                "grades": serialized_grades
-            })
+
+        # Pobierz oceny ucznia
+        grades = Grate.objects.filter(student=instance)
+
+        # Grupuj oceny według przedmiotu
+        grouped_grades = {subject.id: [] for subject in subjects}
+        for grade in grades:
+            subject_id = grade.class_id.subject.id
+            if subject_id in grouped_grades:
+                grouped_grades[subject_id].append(grade)
+
+        # Przygotuj wynik za pomocą SubjectWithGradesSerializer
+        result = [
+            SubjectWithGradesSerializer.from_subject_and_grades(
+                subject=subject,
+                grades=grouped_grades.get(subject.id, [])
+            )
+            for subject in subjects
+        ]
+
         return result
+
+
 
 class AnnouncementsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Announcements
         fields = ['id', 'topic', 'content', 'date', 'school', 'author']
 
-
-# class GrateSerializer:
-#     pass

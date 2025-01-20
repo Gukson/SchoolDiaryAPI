@@ -11,6 +11,7 @@ from SchoolDiaryApp.views.PubliclyAvailable.announcementsManagment import *
 from SchoolDiaryApp.views.PubliclyAvailable.meManagment import *
 from SchoolDiaryApp.views.Student.studentClassesManagment import *
 from SchoolDiaryApp.views.Teacher.teacherClassesManagment import *
+from SchoolDiaryApp.views.Teacher.gratesManagment import *
 
 urlpatterns = [
 
@@ -47,6 +48,11 @@ urlpatterns = [
     path('classes/frequency/', class_frequency, name='class_frequency'),
     path('students/frequency/', student_frequency, name='student_frequency'),
 
+
+    #zarządzanie ocenami przez nauczyciela
+
+    path('classes/grates/', class_grates, name='class_grates'),
+
     #--------------------
 
     #odbieranie ogłoszeń
@@ -62,7 +68,7 @@ urlpatterns = [
 
     #Uczeń
     #przegldaj oceny
-    path('students/grates/', get_student_grades, name='get_student_grades'),
+    path('students/grates/', get_grouped_grades, name='get_student_grades'),
     path('students/classes/', get_student_classes, name='get_student_classes'),
     #================================================
     path('parents/', manage_parents, name='manage_parents'),

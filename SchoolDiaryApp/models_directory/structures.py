@@ -55,7 +55,7 @@ class Grate(models.Model):
     id = models.IntegerField(primary_key=True)
     value = models.IntegerField()
     weight = models.IntegerField()
-    category = models.CharField(max_length=20, unique=True)
+    category = models.CharField(max_length=20)
     description = models.TextField(max_length=1000)
     class_id = models.ForeignKey(
         Classes,
@@ -65,7 +65,7 @@ class Grate(models.Model):
     student = models.ForeignKey(
         'SchoolDiaryApp.Student',
         on_delete=models.PROTECT,
-        related_name='grated_student'
+        related_name='grades'
     )
 
 class Announcements(models.Model):

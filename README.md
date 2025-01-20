@@ -20,6 +20,9 @@ API umożliwia zarządzanie szkołami, klasami, uczniami oraz nauczycielami w sy
 - [Frekwencja](#zarządzanie-frekwencją)
   - [Frekwencja klasy](#zarządzanie-frekwencją-klasy)
   - [Frekwencja_Ucznia](#zarządzanie-frekwencją-indywidualnego-ucznia)
+- [oceny](#oceny)
+  - [zarządzanie ocenami przez nauczyciela](#zarządzanie-ocenami-przez-nauczyciela)
+  - [oceny ucznia](#pobieranie-ocen-przez-ucznia)
 
 
 
@@ -439,6 +442,65 @@ Usuwa wpis dotyczący frekwencji ucznia.
     "frequency_id": 1
 }
 ```
+
+## oceny
+
+### Zarządzanie ocenami przez nauczyciela
+
+#### **Endpoint:** `/classes/grates/`
+**Metody:** `GET`, `POST`
+
+`GET`
+Zwraca oceny klasy z danego przedmiotu z którego są prowadzone zajęcia.
+W body przyjmuje id zajęć
+
+**Body (JSON):**
+```json
+{
+    "classes_id" : 1
+}
+```
+
+
+`POST`
+Pozwala wstawiać oceny uczniom
+
+
+**Body (JSON):**
+```json
+{
+    "classes_id": 1,
+    "grates": [
+        {
+            "student_id": 101,
+            "value": 5,
+            "weight": 2,
+            "category": "Test",
+            "description": "Test z matematyki"
+        },
+        {
+            "student_id": 102,
+            "value": 4,
+            "weight": 1,
+            "category": "Homework",
+            "description": "Praca domowa z fizyki"
+        },
+        {
+            "student_id": 103,
+            "value": 3,
+            "weight": 3,
+            "category": "Project",
+            "description": "Projekt z biologii"
+        }
+    ]
+}
+```
+
+## Pobieranie ocen przez ucznia
+#### **Endpoint:** `/students/grates/`
+**Metody:** `GET`
+
+Zwraca wsyztskie oceny danego ucznia pogrupowane po nazwie przedmiotu
 
 
 ---
