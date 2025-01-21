@@ -103,7 +103,7 @@ class ClassesSerializer(serializers.ModelSerializer):
         model = Classes
         fields = ['id', 'date', 'lesson_num','time', 'class_id', 'subject', 'teacher']
 
-    # 
+    #
 
 
 

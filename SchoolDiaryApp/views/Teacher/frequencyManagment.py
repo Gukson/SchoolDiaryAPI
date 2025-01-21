@@ -51,22 +51,24 @@ def class_frequency(request):
         serializer = FrequencySerializer(created_frequencies, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    elif request.method == 'GET':
-        # Pobierz `class_id` z parametrów URL
-        class_id = request.data.get('class_id')
 
-        if not class_id:
-            return Response({"error": "Parameter 'class_id' is required."}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+@permission_classes([IsTeacher])
+def get_class_frequency(request):
+    class_id = request.data.get('class_id')
 
-        # Pobierz klasę
-        class_ = get_object_or_404(Classes, id=class_id)
+    if not class_id:
+        return Response({"error": "Parameter 'class_id' is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Pobierz uczniów w tej klasie
-        students = Student.objects.filter(class_id=class_.class_id)
+    # Pobierz klasę
+    class_ = get_object_or_404(Classes, id=class_id)
 
-        # Serializuj dane o uczniach i ich frekwencji
-        serializer = StudentWithFrequencySerializer(students, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # Pobierz uczniów w tej klasie
+    students = Student.objects.filter(class_id=class_.class_id)
+
+    # Serializuj dane o uczniach i ich frekwencji
+    serializer = StudentWithFrequencySerializer(students, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST', 'GET', 'PATCH', 'DELETE'])
 @permission_classes([IsTeacher])

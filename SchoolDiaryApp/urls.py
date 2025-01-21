@@ -45,7 +45,8 @@ urlpatterns = [
     path('teachers/classes/', get_teacher_classes, name='get_teacher_classes'),
 
     # zarządzanie frekwencją
-    path('classes/frequency/', class_frequency, name='class_frequency'),
+    path('classes/frequency/post/', class_frequency, name='class_frequency'),
+    path('classes/frequency/get/', get_class_frequency, name='class_frequency'),
     path('students/frequency/', student_frequency, name='student_frequency'),
 
 
