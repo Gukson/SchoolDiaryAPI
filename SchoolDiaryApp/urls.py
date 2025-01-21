@@ -52,7 +52,8 @@ urlpatterns = [
 
     #zarządzanie ocenami przez nauczyciela
 
-    path('classes/grates/', class_grates, name='class_grates'),
+    path('classes/grates/post/', class_grates, name='class_grates'),
+    path('classes/grates/get/', class_grate_get, name='class_grates'),
 
     #--------------------
 

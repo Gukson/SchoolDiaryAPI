@@ -8,7 +8,7 @@ from SchoolDiaryApp.serializers import StudentWithGradesSerializer
 from SchoolDiaryApp.permissions import IsTeacher, IsStudent
 
 
-@api_view(['POST', 'GET'])
+@api_view(['POST'])
 @permission_classes([IsTeacher])
 def class_grates(request):
     if request.method == 'POST':
@@ -57,19 +57,22 @@ def class_grates(request):
         serializer = StudentWithGradesSerializer(created_grates, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    elif request.method == 'GET':
-        data = request.data
-        class_id = data.get('classes_id')
 
-        if not class_id:
-            return Response({"error": "Parameter 'classes_id' is required."}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+@permission_classes([IsTeacher])
+def class_grate_get(request):
+    data = request.data
+    class_id = data.get('classes_id')
 
-        # Pobierz klasę
-        class_ = get_object_or_404(Classes, id=class_id)
+    if not class_id:
+        return Response({"error": "Parameter 'classes_id' is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Pobierz uczniów należących do tej klasy
-        students = Student.objects.filter(class_id=class_.class_id)
+    # Pobierz klasę
+    class_ = get_object_or_404(Classes, id=class_id)
 
-        # Serializacja uczniów wraz z ocenami
-        serializer = StudentWithGradesSerializer(students, many=True, context={'class_': class_})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # Pobierz uczniów należących do tej klasy
+    students = Student.objects.filter(class_id=class_.class_id)
+
+    # Serializacja uczniów wraz z ocenami
+    serializer = StudentWithGradesSerializer(students, many=True, context={'class_': class_})
+    return Response(serializer.data, status=status.HTTP_200_OK)
