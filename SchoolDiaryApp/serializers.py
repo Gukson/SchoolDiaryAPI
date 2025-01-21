@@ -117,6 +117,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
 class FrequencySerializer(serializers.ModelSerializer):
     class_id = ClassesSerializer()
+    student = StudentSerializer()
     class Meta:
         model = Frequency
         fields = ['id', 'type', 'student', 'class_id']
@@ -124,6 +125,7 @@ class FrequencySerializer(serializers.ModelSerializer):
 
 class StudentWithFrequencySerializer(serializers.ModelSerializer):
     frequencies = FrequencySerializer(many=True, source='students_frequency')
+    user = CustomUserSerializer()
     class Meta:
         model = Student
         fields = ['id', 'user', 'frequencies']
