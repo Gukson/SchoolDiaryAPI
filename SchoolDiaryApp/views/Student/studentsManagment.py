@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from SchoolDiaryApp.permissions import IsDirector, IsTeacher
@@ -9,17 +10,14 @@ from SchoolDiaryApp.serializers import CustomUserSerializer, StudentSerializer, 
 
 
 @api_view(['GET', 'POST', 'DELETE', 'PATCH'])
-@permission_classes([IsDirector, IsTeacher])
+@permission_classes([IsAuthenticated])
 def manage_students(request):
     try:
-        # Próbuj pobrać dyrektora
         director = Director.objects.get(user=request.user)
         school = director.school
     except Director.DoesNotExist:
         try:
-            # Jeśli nie jest dyrektorem, próbuj pobrać nauczyciela
             teacher = Teacher.objects.get(user=request.user)
-            # Pobierz szkoły, w których nauczyciel uczy
             school = teacher.school
         except Teacher.DoesNotExist:
             return Response({"error": "User does not have access to manage students."},
