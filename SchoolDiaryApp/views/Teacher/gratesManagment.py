@@ -54,8 +54,8 @@ def class_grates(request):
             created_grates.append(new_grate)
 
         # Zwróć informacje o utworzonych frekwencjach
-        serializer = StudentWithGradesSerializer(created_grates, many=True)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # serializer = StudentWithGradesSerializer(created_grates, many=True)
+        return Response(status=status.HTTP_201_CREATED)
 
 
 @api_view(['POST'])
