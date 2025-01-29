@@ -8,7 +8,7 @@ from SchoolDiaryApp.serializers import StudentWithFrequencySerializer, Frequency
 from SchoolDiaryApp.permissions import IsTeacher, IsStudent
 
 @api_view(['GET'])
-@permission_classes([IsTeacher])
+@permission_classes([IsStudent])
 def get_student_frequency(request):
     student = get_object_or_404(Student, user=request.user)
 
