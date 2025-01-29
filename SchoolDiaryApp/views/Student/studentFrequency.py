@@ -10,8 +10,14 @@ from SchoolDiaryApp.permissions import IsTeacher, IsStudent
 @api_view(['GET'])
 @permission_classes([IsStudent])
 def get_student_frequency(request):
+    # Pobierz ucznia na podstawie aktualnie zalogowanego użytkownika
     student = get_object_or_404(Student, user=request.user)
 
-    # Serializuj dane o uczniach i ich frekwencji
-    serializer = FrequencySerializer(student, many=True)
+    # Pobierz listę obiektów frekwencji dla ucznia
+    frequencies = Frequency.objects.filter(student=student)
+
+    # Serializuj listę obiektów frekwencji
+    serializer = FrequencySerializer(frequencies, many=True)
+
+    # Zwróć zserializowane dane jako odpowiedź JSON
     return Response(serializer.data, status=status.HTTP_200_OK)
