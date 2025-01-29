@@ -12,6 +12,7 @@ from SchoolDiaryApp.views.PubliclyAvailable.meManagment import *
 from SchoolDiaryApp.views.Student.studentClassesManagment import *
 from SchoolDiaryApp.views.Teacher.teacherClassesManagment import *
 from SchoolDiaryApp.views.Teacher.gratesManagment import *
+from SchoolDiaryApp.views.Student.studentFrequency import *
 
 urlpatterns = [
 
@@ -72,7 +73,7 @@ urlpatterns = [
     #przegldaj oceny
     path('students/grates/', get_grouped_grades, name='get_student_grades'),
     path('students/classes/', get_student_classes, name='get_student_classes'),
-    path('frequency/', get_student_classes, name='get_student_classes'),
+    path('frequency/', get_student_frequency, name='get_student_classes'),
     #================================================
     path('parents/', manage_parents, name='manage_parents'),
     path('schools/',school_view,name='school_view'),
